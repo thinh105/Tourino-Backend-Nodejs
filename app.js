@@ -11,6 +11,12 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8')
 );
 
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
+//own middleware
 const getAllTour = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -20,6 +26,8 @@ const getAllTour = (req, res) => {
 };
 
 const getTour = (req, res) => {
+  console.log(req.requestTime);
+
   let id = parseInt(req.params.id);
 
   if (id < tours.length)
