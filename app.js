@@ -11,37 +11,30 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8')
 );
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Hello from the server side!',
-    app: 'Natour'
-  });
-});
-
-app.get('/api/v1/tours', (req, res) => {
+const getAllTour = (req, res) => {
   res.status(200).json({
     status: 'success',
     result: tours.length,
     data: { tours }
   });
-});
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
   let id = parseInt(req.params.id);
-  
+
   if (id < tours.length)
-  res.status(200).json({
-    status: 'success',
-    data: { tour: tours[id] }
-  });
+    return res.status(200).json({
+      status: 'success',
+      data: { tour: tours[id] }
+    });
 
   res.status(404).json({
     status: 'fail',
     message: 'Invalid ID'
-  })
-});
+  });
+};
 
-app.post('/api/v1/tours', (req, res) => {
+const createNewTour = (req, res) => {
   //console.log(req.body);
 
   let newId = tours[tours.length - 1].id + 1;
@@ -61,7 +54,27 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
+};
+
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Hello from the server side!',
+    app: 'Natour'
+  });
 });
+
+// app.get('/api/v1/tours', getAllTour);
+
+// app.get('/api/v1/tours/:id', getTour);
+
+// app.post('/api/v1/tours', createNewTour);
+
+app
+  .route('/api/v1/tours')
+  .get(getAllTour)
+  .post(createNewTour);
+
+app.route('/api/v1/tours/:id').get(getTour);
 
 app.listen(port, () => {
   console.log(`The server is running in port ${port} !`);
