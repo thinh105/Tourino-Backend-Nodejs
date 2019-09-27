@@ -1,22 +1,24 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
 
-app.use(express.json());
+// 1 MIDDLEWARE
 
-const port = '6969';
+app.use(express.json()); //build-in middleware
+
+app.use(morgan('dev')); //3rd party middleware
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+}); //own middleware
 
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8')
 );
 
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  next();
-});
-
-//own middleware
 const getAllTour = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -24,6 +26,8 @@ const getAllTour = (req, res) => {
     data: { tours }
   });
 };
+
+// 2 ROUTE HANDLERS
 
 const getTour = (req, res) => {
   console.log(req.requestTime);
@@ -64,6 +68,8 @@ const createNewTour = (req, res) => {
   );
 };
 
+// 3 ROUTES
+
 app.get('/', (req, res) => {
   res.status(200).json({
     message: 'Hello from the server side!',
@@ -84,6 +90,9 @@ app
 
 app.route('/api/v1/tours/:id').get(getTour);
 
+// 4 START SERVER
+
+const port = '6969';
 app.listen(port, () => {
   console.log(`The server is running in port ${port} !`);
 });
