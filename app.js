@@ -19,30 +19,62 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8')
 );
 
+// 2 ROUTE HANDLERS
+
 const getAllTour = (req, res) => {
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     result: tours.length,
     data: { tours }
   });
 };
 
-// 2 ROUTE HANDLERS
-
 const getTour = (req, res) => {
-  console.log(req.requestTime);
-
   let id = parseInt(req.params.id);
 
-  if (id < tours.length)
-    return res.status(200).json({
-      status: 'success',
-      data: { tour: tours[id] }
+  if (id >= tours.length)
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
     });
 
-  res.status(404).json({
-    status: 'fail',
-    message: 'Invalid ID'
+  res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    data: { tour: tours[id] }
+  });
+};
+
+const updateTour = (req, res) => {
+  let id = parseInt(req.params.id);
+
+  if (id >= tours.length)
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    });
+
+  res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    dataUpdate: { tour: req.body }
+  });
+};
+
+const deleteTour = (req, res) => {
+  let id = parseInt(req.params.id);
+
+  if (id >= tours.length)
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    });
+
+  res.status(204).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    data: null
   });
 };
 
@@ -62,6 +94,7 @@ const createNewTour = (req, res) => {
       if (err) throw err;
       res.status(201).json({
         status: 'success',
+        requestedAt: req.requestTime,
         data: { tours: newTour }
       });
     }
@@ -70,25 +103,16 @@ const createNewTour = (req, res) => {
 
 // 3 ROUTES
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Hello from the server side!',
-    app: 'Natour'
-  });
-});
-
-// app.get('/api/v1/tours', getAllTour);
-
-// app.get('/api/v1/tours/:id', getTour);
-
-// app.post('/api/v1/tours', createNewTour);
-
 app
   .route('/api/v1/tours')
   .get(getAllTour)
   .post(createNewTour);
 
-app.route('/api/v1/tours/:id').get(getTour);
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 // 4 START SERVER
 
