@@ -21,7 +21,7 @@ const tours = JSON.parse(
 
 // 2 ROUTE HANDLERS
 
-const getAllTour = (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     requestedAt: req.requestTime,
@@ -78,7 +78,7 @@ const deleteTour = (req, res) => {
   });
 };
 
-const createNewTour = (req, res) => {
+const createTour = (req, res) => {
   //console.log(req.body);
 
   let newId = tours[tours.length - 1].id + 1;
@@ -101,18 +101,71 @@ const createNewTour = (req, res) => {
   );
 };
 
+const getAllUsers = (req, res) => {
+  res.status(250).json({
+    status: 'error',
+    requestedAt: req.requestTime,
+    message: 'This route is not defined yet!'
+  });
+};
+const getUser = (req, res) => {
+  res.status(250).json({
+    status: 'error',
+    requestedAt: req.requestTime,
+    message: 'This route is not defined yet!'
+  });
+};
+const updateUser = (req, res) => {
+  res.status(250).json({
+    status: 'error',
+    requestedAt: req.requestTime,
+    message: 'This route is not defined yet!'
+  });
+};
+const deleteUser = (req, res) => {
+  res.status(250).json({
+    status: 'error',
+    requestedAt: req.requestTime,
+    message: 'This route is not defined yet!'
+  });
+};
+const createUser = (req, res) => {
+  res.status(250).json({
+    status: 'error',
+    requestedAt: req.requestTime,
+    message: 'This route is not defined yet!'
+  });
+};
+
 // 3 ROUTES
 
-app
-  .route('/api/v1/tours')
-  .get(getAllTour)
-  .post(createNewTour);
+const tourRouter = express.Router();
+const userRouter = express.Router();
 
-app
-  .route('/api/v1/tours/:id')
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
+
+tourRouter
+  .route('/')
+  .get(getAllTours)
+  .post(createTour);
+
+tourRouter
+  .route('/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
+
+userRouter
+  .route('/')
+  .get(getAllUsers)
+  .post(createUser);
+
+userRouter
+  .route('/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 // 4 START SERVER
 
@@ -120,3 +173,8 @@ const port = '6969';
 app.listen(port, () => {
   console.log(`The server is running in port ${port} !`);
 });
+
+// let nodemon = require('nodemon');
+
+// // force a quit
+// nodemon.emit('quit');
