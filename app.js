@@ -9,7 +9,7 @@ const userRoutes = require('./routes/userRoutes');
 
 // 1 MIDDLEWARE
 
-app.use(express.json()); //build-in middleware
+app.use(express.json()); //build-in middleware to get req.body
 
 app.use(morgan('dev')); //3rd party middleware
 

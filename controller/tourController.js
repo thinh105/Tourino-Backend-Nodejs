@@ -6,6 +6,18 @@ const tours = JSON.parse(
 
 // ROUTE HANDLERS
 
+exports.checkId = (req, res, next, val) => {
+  //console.log(`Tour ID is ${val}`);
+
+  if (val >= tours.length)
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    });
+
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -17,13 +29,6 @@ exports.getAllTours = (req, res) => {
 
 exports.getTour = (req, res) => {
   let id = parseInt(req.params.id);
-
-  if (id >= tours.length)
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-
   res.status(200).json({
     status: 'success',
     requestedAt: req.requestTime,
@@ -32,14 +37,6 @@ exports.getTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  let id = parseInt(req.params.id);
-
-  if (id >= tours.length)
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-
   res.status(200).json({
     status: 'success',
     requestedAt: req.requestTime,
@@ -48,14 +45,6 @@ exports.updateTour = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-  let id = parseInt(req.params.id);
-
-  if (id >= tours.length)
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-
   res.status(204).json({
     status: 'success',
     requestedAt: req.requestTime,
