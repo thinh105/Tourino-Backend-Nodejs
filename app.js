@@ -11,7 +11,9 @@ const userRoutes = require('./routes/userRoutes');
 
 app.use(express.json()); //build-in middleware to get req.body
 
-app.use(morgan('dev')); //3rd party middleware
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev')); //3rd party middleware to show log on console
+}
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
