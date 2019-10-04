@@ -26,37 +26,6 @@ app.listen(port, () => {
   console.log(`The server is running in port ${port} !`);
 });
 
-const tourSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A tour must have a name']
-    //unique: true
-  },
-  rating: {
-    type: Number,
-    default: 3
-  },
-  price: {
-    type: Number,
-    required: [true, 'A tour must have a price']
-  }
-});
-
-const Thinh = mongoose.model('Thinh', tourSchema);
-
-const testTour = new Thinh({
-  name: 'Thai binh la gi Boi',
-  rating: 4.3,
-  price: 897
-});
-
-testTour
-  .save()
-  .then(doc => {
-    console.log(doc);
-  })
-  .catch(err => console.log('ERROR :', err));
-
 // let nodemon = require('nodemon');
 // // force a quit
 // nodemon.emit('quit');
