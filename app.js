@@ -15,11 +15,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //3rd party middleware to show log on console
 }
 
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  next();
-}); //own middleware
-
 // 2 ROUTES
 
 app.use('/api/v1/tours', tourRoutes);
