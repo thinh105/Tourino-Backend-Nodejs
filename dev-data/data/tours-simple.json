@@ -135,53 +135,6 @@
     "startDates": ["2021-12-16,10:00", "2022-01-16,10:00", "2022-12-12,10:00"]
   },
   {
-    "id": 9,
-    "name": "Bai Dinh",
-    "dutation": "3 days 2 nights",
-    "price": "300"
-  },
-  {
-    "id": 10,
-    "name": "Trang An",
-    "dutation": "3 days 2 nights",
-    "price": "900"
-  },
-  {
-    "id": 11,
-    "name": "Trang An",
-    "dutation": "3 days 2 nights",
-    "price": "900"
-  },
-  {
-    "id": 12,
-    "name": "Trang An",
-    "dutation": "3 days 2 nights",
-    "price": "900"
-  },
-  {
-    "id": 13,
-    "name": "Trang An",
-    "dutation": "3 days 2 nights",
-    "price": "900"
-  },
-  {
-    "id": 14,
-    "name": "Trang An",
-    "dutation": "3 days 2 nights",
-    "price": "900"
-  },
-  {
-    "id": 15,
-    "name": "Trang An",
-    "dutation": "3 days 2 nights",
-    "price": "900"
-  },
-  { "id": 16 },
-  {
-    "id": 17,
-    "name": "Trang An",
-    "dutation": "3 days 2 nights",
-    "price": "900"
-  },
-  { "id": 18, "name": "Ha Long", "dutation": "3 days 2 nights", "price": "900" }
+    "name": "belo"
+  }
 ]
