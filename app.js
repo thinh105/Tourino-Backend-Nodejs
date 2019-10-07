@@ -9,7 +9,7 @@ const userRoutes = require('./routes/userRoutes');
 
 // 1 MIDDLEWARE
 
-app.use(express.json()); //build-in middleware to get req.body
+app.use(express.json()); //build-in middleware to get req.body ~ req.query
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //3rd party middleware to show log on console
