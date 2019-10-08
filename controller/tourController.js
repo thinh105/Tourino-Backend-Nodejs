@@ -1,4 +1,5 @@
 const Tour = require('../Models/tourModel');
+const APIFeatures = require('../Utils/apiFeatures');
 
 // ROUTE HANDLERS
 
@@ -20,79 +21,17 @@ exports.createTour = async (req, res) => {
 
 exports.getAllTours = async (req, res) => {
   try {
-    // BUILD QUERY
-
-    // 1A - Basic Filtering
-
-    // ...tours?duration=5&difficulty=easy
-    //req.query = { duration: '5',difficulty: 'easy' }
-    // Query in MongoDb : await Tour.find({ duration: '5',difficulty: 'easy' } );
-
-    const queryObj = { ...req.query }; // using destructuring to hard copy in ES6
-
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach(el => delete queryObj[el]);
-
-    // 1B - Advanced Filtering
-
-    // ...tours?duration[gte]=5&difficulty=easy
-
-    // Express parse query  { duration: { gte:'5'},difficulty: 'easy' }
-    // MongoDB query { duration: { $gte:'5'},difficulty: 'easy' }
-
-    // string need to replace:  gte, gt, lte, lt
-
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-
-    // \b: match the exact word - g change all the time
-    // using regular expressions -> google stackoverflow to find out
-
-    console.log(JSON.parse(queryStr));
-
-    let query = Tour.find(JSON.parse(queryStr));
-
-    // 2 - Sorting
-
-    // tours?sort=price
-
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(',').join(' ');
-      query = query.sort(sortBy); //sort is the Mongoose method
-    } else {
-      query = query.sort('-ratingsAverage');
-    }
-
-    // 3 - Field Selection
-
-    //tours?fields=name,duration,difficulty,price
-
-    if (req.query.fields) {
-      const fields = req.query.fields.split(',').join(' ');
-      query = query.select(fields);
-    } else query = query.select('-__v'); //using - to exlcude some field
-
-    // 4 - Pagination
-
-    //tours?page=2&limit=10
-
-    // page = 2 & limit = 10
-    // page1: 1-10, page2: 11-20, page3: 21-30
-
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 5;
-    const skip = (page - 1) * limit;
-
-    query = query.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const numTours = await Tour.countDocuments();
-      if (skip >= numTours) throw new Error('This page does not exist!!!');
-    }
-
     //EXECUTE QUERY
 
-    const tours = await query;
+    const features = new APIFeatures(Tour.find(), req.query);
+
+    features
+      .filter()
+      .sort()
+      .selectFields()
+      .paginate();
+
+    const tours = await features.query;
 
     // SEND RESPONSE
 
