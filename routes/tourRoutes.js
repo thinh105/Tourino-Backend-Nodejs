@@ -6,14 +6,18 @@ const tourController = require('../controller/tourController');
 
 //router.param('id', tourController.checkId);
 
-router
-  .route('/')
-  .get(tourController.getAllTours)
-  .post(tourController.createTour);
+router.route('/tour-stats').get(tourController.getTourStats);
+
+router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
 router
   .route('/top-five-tours') // to avoid conflix with route('/:id'), place this router above router /:id
   .get(tourController.aliasTopFiveTours, tourController.getAllTours);
+
+router
+  .route('/')
+  .get(tourController.getAllTours)
+  .post(tourController.createTour);
 
 router
   .route('/:id')

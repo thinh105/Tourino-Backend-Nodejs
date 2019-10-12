@@ -1,5 +1,5 @@
-const Tour = require('../Models/tourModel');
-const APIFeatures = require('../Utils/apiFeatures');
+const Tour = require('../models/tourModel');
+const APIFeatures = require('../utils/apiFeatures');
 
 // ROUTE HANDLERS
 
@@ -48,10 +48,106 @@ exports.getAllTours = async (req, res) => {
   }
 };
 
+exports.getTourStats = async (req, res) => {
+  try {
+    const stat = await Tour.aggregate([
+      {
+        $match: { ratingsAverage: { $gte: 4 } }
+      },
+      {
+        $group: {
+          //_id: '$difficulty',
+          _id: '$duration',
+          num: { $sum: 1 },
+          numRating: { $sum: '$ratingsQuantity' },
+          avgRating: { $avg: '$ratingsAverage' },
+          avgPrice: { $avg: '$price' },
+          minPrice: { $min: '$price' },
+          maxPrice: { $max: '$price' }
+        }
+      },
+      {
+        $sort: { minPrice: 1 }
+      }
+      // ,
+      // {
+      //   $match: { _id: { $ne: 'easy'}}
+      // }
+    ]);
+    res.status(200).json({
+      status: 'success',
+      result: stat.length,
+      data: { stat }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
+};
+
+exports.getMonthlyPlan = async (req, res) => {
+  try {
+    const { year } = req.params;
+    const monthlyPlan = await Tour.aggregate([
+      {
+        $unwind: '$startDates'
+      },
+      {
+        $match: {
+          startDates: {
+            // Date comparison on MongoDb
+            $gte: new Date(`${year}-01-01`), //  Date() is Mongodb Object Constructors and Methods
+            $lte: new Date(`${year}-12-01`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { $month: '$startDates' },
+          // $month (aggregation) Returns the month of a date as a number between 1 and 12.
+          numTourstarts: { $sum: 1 },
+          tours: { $push: '$name' }
+          // Returns an array of all values that result from applying an expression
+          // to each document in a group of documents that share the same group by key.
+          // $push is only available in the $group stage.
+        }
+      },
+      {
+        $addFields: {
+          month: '$_id'
+        }
+      },
+      {
+        $project: {
+          _id: 0
+        }
+      },
+      {
+        $sort: {
+          numTourstarts: -1
+        }
+      }
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      result: monthlyPlan.length,
+      data: { monthlyPlan }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
+};
+
 exports.aliasTopFiveTours = (req, res, next) => {
   req.query.limit = '5';
   req.query.sort = '-ratingsAverage,price';
-  req.query.fields = 'name,price,ratingAverage,summary,difficulty';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
 };
 
