@@ -2,6 +2,9 @@
 
 @baseUrl = http://127.0.0.1:6969/api/v1/tours
 
+### Wrong URL
+GET http://127.0.0.1:6969/api/v10/tours
+
 ### Get monthly plan on year 2021
 GET {{baseUrl}}/monthly-plan/:2021 HTTP/1.1
 
@@ -41,7 +44,7 @@ GET {{baseUrl}}?sort=-price HTTP/1.1
 
 ### select fields
 GET {{baseUrl}}
-?fields=name,duration,difficulty,price  HTTP/1.1
+?fields=name,duration,difficulty,price
 #,-_id
 
 ### Pagination

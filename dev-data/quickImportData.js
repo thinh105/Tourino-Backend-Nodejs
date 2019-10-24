@@ -2,7 +2,7 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-const Tour = require('../../Models/tourModel');
+const Tour = require('../models/tourModel');
 
 dotenv.config({ path: './config.env' });
 
@@ -52,4 +52,4 @@ const deleteData = async () => {
 if (process.argv[2] === '-i') importData();
 if (process.argv[2] === '-d') deleteData();
 
-// how to run ? node dev-data/data/quickImport -i
+// how to run ? node dev-data/quickImport -i
