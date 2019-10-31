@@ -5,8 +5,15 @@
 ### Wrong URL
 GET http://127.0.0.1:6969/api/v10/tours
 
+
+###Wrong URL 2
+GET {{baseUrl}}/monthly-splan/:2021
+
 ### Get monthly plan on year 2021
 GET {{baseUrl}}/monthly-plan/:2021 HTTP/1.1
+
+### Alias top 5 tours
+GET {{baseUrl}}/top-five-tours HTTP/1.1
 
 ### Get tour stats
 GET {{baseUrl}}/tour-stats HTTP/1.1
@@ -50,8 +57,7 @@ GET {{baseUrl}}
 ### Pagination
 GET {{baseUrl}}?limit=6&page=1 HTTP/1.1
 
-### Alias top 5 tours
-GET {{baseUrl}}/top-five-tours HTTP/1.1
+
 							
 ### Update tour
 PATCH {{baseUrl}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
