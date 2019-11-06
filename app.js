@@ -5,8 +5,8 @@ const app = express();
 
 const tourRoutes = require('./routes/tourRoutes');
 const userRoutes = require('./routes/userRoutes');
+const wrongRoutes = require('./routes/wrongRoutes');
 
-const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
 
 // 1 MIDDLEWARE
@@ -22,9 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/tours', tourRoutes);
 app.use('/api/v1/users', userRoutes);
 
-app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find '${req.originalUrl}' on this server!`), 404);
-});
+app.all('*', wrongRoutes);
 
 app.use(globalErrorHandler);
 module.exports = app;
