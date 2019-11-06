@@ -23,7 +23,7 @@ GET {{baseUrl}} HTTP/1.1
 ### Get a tour
 GET {{baseUrl}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
 
-### Get a 404 tour
+### Get a tour with valid ID ( but not exist ) - 404
 GET {{baseUrl}}/5d99ad17cbc74c33e46d9c60 HTTP/1.1
 
 
@@ -62,8 +62,8 @@ GET {{baseUrl}}?limit=6&page=1 HTTP/1.1
 
 
 							
-### Update tour
-PATCH {{baseUrl}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+### Update tour with valid ID ( but not exist ) - 404
+PATCH {{baseUrl}}/5d99ad17cbc74c33e46d9c90 HTTP/1.1
 content-type: application/json
 
 {
@@ -72,6 +72,6 @@ content-type: application/json
 }
 					
 
-### Delete tour
-DELETE {{baseUrl}}/5d943906721ba4595616e735 HTTP/1.1
+### Delete tour with valid ID ( but not exist ) - 404
+DELETE {{baseUrl}}/5d943906721ba4595616e999 HTTP/1.1
 					
