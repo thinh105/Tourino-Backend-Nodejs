@@ -74,7 +74,7 @@ content-type: application/json
   "price": "1999"
 }
 
-### Update tour with data not valid
+### Update tour with many data not valid
 PATCH {{baseUrl}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
 content-type: application/json
 
