@@ -23,11 +23,14 @@ GET {{baseUrl}} HTTP/1.1
 ### Get a tour
 GET {{baseUrl}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
 
+### Get a tour with wrong ID
+GET {{baseUrl}}/aaaaaaaaaaaaaaa HTTP/1.1
+
 ### Get a tour with valid ID ( but not exist ) - 404
 GET {{baseUrl}}/5d99ad17cbc74c33e46d9c60 HTTP/1.1
 
 
-### Post a tour
+### Post a duplicate tour
 POST {{baseUrl}} HTTP/1.1
 content-type: application/json
 
@@ -46,8 +49,8 @@ content-type: application/json
     "startDates": ["2021-07-20,10:00", "2021-09-10,10:00", "2021-11-05,10:00"]
   }
 
-### filter query
-GET {{baseUrl}}?duration[gt]=5&difficulty=easy  HTTP/1.1
+### filter wrong query
+GET {{baseUrl}}?duration[gt]=5&difficulty=vietnam  HTTP/1.1
 
 ### sort query					
 GET {{baseUrl}}?sort=-price HTTP/1.1
@@ -69,6 +72,16 @@ content-type: application/json
 {
 	"name": "Ha Long Boi Loi",
   "price": "1999"
+}
+
+### Update tour with data not valid
+PATCH {{baseUrl}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+content-type: application/json
+
+{
+	"name": "Ha",
+  "difficulty": "very very hard",
+  "ratingsAverage":7
 }
 					
 

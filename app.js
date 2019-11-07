@@ -13,6 +13,8 @@ const globalErrorHandler = require('./controller/errorController');
 
 app.use(express.json()); //build-in middleware to get req.body ~ req.query
 
+app.use(express.static(`${__dirname}/public`));
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //3rd party middleware to show log on console
 }
@@ -25,4 +27,5 @@ app.use('/api/v1/users', userRoutes);
 app.all('*', wrongRoutes);
 
 app.use(globalErrorHandler);
+
 module.exports = app;
