@@ -1,0 +1,12 @@
+@baseUrl = http://127.0.0.1:6969/api/v1/users
+
+### Sign up an user
+POST {{baseUrl}}/signup HTTP/1.1
+content-type: application/json
+
+  {
+    "name": " Long Than Tuong ",
+    "email": "long12345@gmail.com",
+    "password":"chienthang",
+    "passwordConfirm":"chienthang"
+  }
