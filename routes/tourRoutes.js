@@ -1,8 +1,8 @@
 const express = require('express');
+const tourController = require('../controller/tourController');
+const { protect } = require('../controller/authController');
 
 const router = express.Router();
-
-const tourController = require('../controller/tourController');
 
 //router.param('id', tourController.checkId);
 
@@ -16,13 +16,13 @@ router
 
 router
   .route('/')
-  .get(tourController.getAllTours)
+  .get(protect, tourController.getAllTours)
   .post(tourController.createTour);
 
 router
   .route('/:id')
-  .get(tourController.getTour)
-  .patch(tourController.updateTour)
+  .get(protect, tourController.getTour)
+  .patch(protect, tourController.updateTour)
   .delete(tourController.deleteTour);
 
 module.exports = router;

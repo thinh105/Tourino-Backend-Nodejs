@@ -141,12 +141,6 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true
   });
-
-  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
-
-  res.status(200).json({
-    status: 'success',
-    dataUpdate: { tour }
   });
 });
 
@@ -156,7 +150,6 @@ exports.deleteTour = catchAsync(async (req, res, next) => {
   if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
 
   // in RESTful API, common practice is not send anything back to client when deleted
-
   res.status(204).json({
     status: 'success',
     data: null

@@ -15,6 +15,11 @@ app.use(express.json()); //build-in middleware to get req.body ~ req.query
 
 app.use(express.static(`${__dirname}/public`));
 
+// app.use((req, res, next) => {
+//   console.log(req.headers);
+//   next();
+// });
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //3rd party middleware to show log on console
 }

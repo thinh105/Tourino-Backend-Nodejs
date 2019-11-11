@@ -1,16 +1,13 @@
+const mongoose = require('mongoose');
+require('dotenv').config({ path: './config.env' }); // connect environment variable config.env file
+
 process.on('uncaughtException', err => {
-  console.log(err);
-
-  console.log('UncaughtException!!! Shutting down...');
-
+  console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.log(err.name, err.message);
   process.exit(1);
 });
 
-const dotenv = require('dotenv'); // connect environment variable config.env file
-const mongoose = require('mongoose');
 const app = require('./app');
-
-dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE.replace(
   '<password>',

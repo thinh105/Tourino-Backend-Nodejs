@@ -21,21 +21,23 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide a password!!!'],
-    minlength: [8, 'A password must have more than 7 characters!!!']
+    minlength: [8, 'A password must have more than 7 characters!!!'],
+    select: false
   },
   passwordConfirm: {
     type: String,
     required: [true, 'Please comfirm a password!!!'],
     validate: {
       validator: function(el) {
-        //this only works on CREATE or SAVE not Update!!!!
+        //this only works on SAVE not Update!!!!
         //whenever we want to update a user
         //we will always have to use SAVE not FindOneAndUpdate
         return el === this.password;
       },
       message: 'Passwords are not the same!!!'
     }
-  }
+  },
+  passwordChangedAt: Date
 });
 
 //pre-middleware on save
@@ -54,6 +56,27 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+// an instance medthod to check password correct or not
 
+userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>
+  await bcrypt.compare(candidatePassword, userPassword);
+
+// an instance method to check Password changed after Token issued or not
+
+userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    return JWTTimestamp < changedTimestamp; // TRUE = Changed = Password was changed AFTER token was issued
+  }
+
+  return false; // NOT changed
+};
+
+//Create User collection
+
+const User = mongoose.model('User', userSchema);
 module.exports = User;

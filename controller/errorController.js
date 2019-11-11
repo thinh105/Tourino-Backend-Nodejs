@@ -10,7 +10,6 @@ const handleDuplicateFieldsDB = err => {
   // Use Regex to get the value in errmsg
 
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  console.log(value);
 
   const message = `Duplicate field value: ${value}. Please use another value!!!`;
   return new AppError(message, 400);
@@ -23,6 +22,9 @@ const handleValidationErrorDB = err => {
 
   return new AppError(message, 400);
 };
+
+const handleJWTError = () =>
+  new AppError('Invalid Token. Please log in again!!!', 401);
 
 const sendErrorDevelopment = (err, res) => {
   res.status(err.statusCode).json({
@@ -44,7 +46,8 @@ const sendErrorProduction = (err, res) => {
     //Programming or other unknown error: don't leak error details
   } else {
     // 1) log error
-    console.error('ERROR @#$%^', err);
+    // eslint-disable-next-line no-console
+    console.error('UNKNOWN ERROR @#$%^', err);
 
     // 2) Send generic message to client
     res.status(500).json({
@@ -62,15 +65,23 @@ module.exports = (err, req, res, next) => {
     sendErrorDevelopment(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     // not a good practise to override the arguments of function.
-
     //create a hard copy
 
     let error = { ...err };
+    console.log(error);
 
-    if (error.name === 'CastError') error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (error.name === 'ValidationError')
-      error = handleValidationErrorDB(error);
+    error =
+      error.name === 'CastError'
+        ? handleCastErrorDB(error)
+        : error.code === 11000
+        ? handleDuplicateFieldsDB(error)
+        : error.name === 'ValidationError'
+        ? handleValidationErrorDB(error)
+        : error.name === 'JsonWebTokenError'
+        ? handleJWTError()
+        : error.name === 'TokenExpiredError'
+        ? handleJWTError()
+        : error;
 
     sendErrorProduction(error, res);
   }
