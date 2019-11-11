@@ -1,6 +1,6 @@
 const express = require('express');
 const tourController = require('../controller/tourController');
-const { protect } = require('../controller/authController');
+const authController = require('../controller/authController');
 
 const router = express.Router();
 
@@ -16,13 +16,17 @@ router
 
 router
   .route('/')
-  .get(protect, tourController.getAllTours)
+  .get(authController.protect, tourController.getAllTours)
   .post(tourController.createTour);
 
 router
   .route('/:id')
-  .get(protect, tourController.getTour)
-  .patch(protect, tourController.updateTour)
-  .delete(tourController.deleteTour);
+  .get(authController.protect, tourController.getTour)
+  .patch(authController.protect, tourController.updateTour)
+  .delete(
+    authController.protect,
+    authController.restrictTo('tulanh', 'leadGuide'),
+    tourController.deleteTour
+  );
 
 module.exports = router;

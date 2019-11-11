@@ -141,6 +141,12 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true
   });
+
+  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
+
+  res.status(200).json({
+    status: 'success',
+    data: { tour }
   });
 });
 

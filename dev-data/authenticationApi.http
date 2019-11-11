@@ -1,16 +1,7 @@
 @users = http://127.0.0.1:6969/api/v1/users
 @tours = http://127.0.0.1:6969/api/v1/tours
 
-### Sign up an user
-POST {{users}}/signup HTTP/1.1
-content-type: application/json
 
-  {
-    "name": " Longo 10fff0 ",
-    "email": "longd1234578@gmail.com",
-    "password":"chienthangthanh",
-    "passwordConfirm":"chienthangthanh"
-  }
 
 ### Sign up another user
 POST {{users}}/signup HTTP/1.1
@@ -72,19 +63,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzRlZDBhM
 GET {{tours}} HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzQwYjkyY2E5ODYyNTRjM2FmMTY5NCIsImlhdCI6MTU3MzM1Njk2OSwiZXhwIjoxNTc1OTQ4OTY5fQ.iLmH-J59oAIZQjuQN-7pYEXbcvoYmqI_JnKpyHmE86E
 
+### Sign up an user
+# @name signupAcc2
+POST {{users}}/signup HTTP/1.1
+content-type: application/json
+
+  {
+    "name": " Longo",
+    "email": "long123@gmail.com",
+    "password":"chienthangthanh",
+    "passwordConfirm":"chienthangthanh"
+  }
+
+###
+@tokenAcc2 = {{signupAcc2.response.body.token}}
+
+### Get all tour
+GET {{tours}} HTTP/1.1
+Authorization: Bearer {{tokenAcc2}}
+
 
 ### Login and get data
-# @name loginAcc1
+# @name acc1
 POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "long@gmail.com",
+  "email": "longtuan1279@gmail.com",
   "password":"12345678905"
 }
 
 ###
-@tokenAcc1 = {{loginAcc1.response.body.token}}
+@tokenAcc1 = {{acc1.response.body.token}}
 
 ### Get all tour
 GET {{tours}} HTTP/1.1
@@ -103,3 +113,33 @@ Authorization: Bearer {{tokenAcc1}}
 	"name": "Ha Long Boi Loi",
   "price": "1999"
 }
+
+### Sign up 'tulanh' user
+# @name tulanh1
+POST {{users}}/signup HTTP/1.1
+content-type: application/json
+
+  {
+    "name": "Tuan Long",
+    "email": "longtuan@gmail.com",
+    "password":"12345678905",
+    "passwordConfirm":"12345678905"
+  }
+
+### Login tu lanh
+# @name tulanh
+POST {{users}}/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "longtuan@gmail.com",
+  "password":"12345678905"
+}
+
+
+###
+@tokentulanh = {{tulanh.response.body.token}}
+
+### Delete tour
+DELETE {{tours}}/5d943906721ba4595616e735 HTTP/1.1
+Authorization: Bearer {{tokentulanh}}
