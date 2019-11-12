@@ -68,7 +68,6 @@ module.exports = (err, req, res, next) => {
     //create a hard copy
 
     let error = { ...err };
-    console.log(error);
 
     error =
       error.name === 'CastError'

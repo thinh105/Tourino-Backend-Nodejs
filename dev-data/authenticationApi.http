@@ -9,7 +9,7 @@ content-type: application/json
 
   {
     "name": " Longo ",
-    "email": "longtuan1279@gmail.com",
+    "email": "longtuanabcd@gmail.com",
     "password":"12345678905",
     "passwordConfirm":"12345678905"
   }
@@ -143,3 +143,12 @@ content-type: application/json
 ### Delete tour
 DELETE {{tours}}/5d943906721ba4595616e735 HTTP/1.1
 Authorization: Bearer {{tokentulanh}}
+
+
+### forgot password
+POST {{users}}/forgotPassword HTTP/1.1
+content-type: application/json
+
+{
+  "email": "long123@gmail.com"
+}
