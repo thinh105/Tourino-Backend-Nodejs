@@ -45,7 +45,12 @@ const userSchema = new mongoose.Schema({
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
-  passwordResetExpires: Date
+  passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
+  }
 });
 
 //pre-middleware on save
@@ -61,6 +66,16 @@ userSchema.pre('save', async function(next) {
 
   //delete passwordConfirm field
   this.passwordConfirm = undefined;
+  next();
+});
+
+userSchema.pre(/^find/, function(next) {
+  // this points to the current query
+  // do not using arrow function
+  // because Arrow functions explicitly prevent binding this,
+  // so your method will not have access to the document
+
+  this.find({ active: { $ne: false } });
   next();
 });
 

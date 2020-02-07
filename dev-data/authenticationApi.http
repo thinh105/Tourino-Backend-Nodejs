@@ -2,82 +2,21 @@
 @tours = http://127.0.0.1:6969/api/v1/tours
 
 
-
-### Sign up user
-POST {{users}}/signup HTTP/1.1
-content-type: application/json
-
-  {
-    "name": " Longo ",
-    "email": "longtuanabcd@gmail.com",
-    "password":"12345678905",
-    "passwordConfirm":"12345678905"
-  }
-
-### Log in an user
-POST {{users}}/login HTTP/1.1
-content-type: application/json
-
-{
-  "email": "longd1234578@gmail.com",
-  "password":"chienthangthanh"
-}
-
-### Log in an user
-POST {{users}}/login HTTP/1.1
-content-type: application/json
-
-{
-  "email": "longd1278@gmail.com",
-  "password":"hangthanh"
-}
-
-### Log in an user
-
-POST {{users}}/login HTTP/1.1
-content-type: application/json
-
-{
-  "email": "long@gmail.com",
-  "password":"12345678905"
-}
-
-
-### Get all tour
-GET {{tours}} HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzRlZDBhMWQ0ZTYxMWU1MDVmOWMwMCIsImlhdCI6MTU3MzIyNTM3NSwiZXhwIjoxNTc1ODE3Mzc1fQ.PRhPsqRpZ0ftyirdlSgRZ_cyfYsZovIVmwFTNE3khM4
-
-### Get all tour with wrong Token
-GET {{tours}} HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzRlZDBhMWQ0ZTYxMWU1MDVmOWMwMCIsImlhdCI6MTU3MzIyNTM3NSwiZXhwIjoxNTc1ODE3Mzc1fQ.PRhPsqRpZ0ftyirdlSgRZ_cyfYsZovIVmwFTNE3khM5
-
-### Get all tour with expired Token
-GET {{tours}} HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzRlZDBhMWQ0ZTYxMWU1MDVmOWMwMCIsImlhdCI6MTU3MzIyNjQ4MSwiZXhwIjoxNTczMjI2NDg2fQ.29WbRzJkif1VPDNTk8IMN66MNyE93eGurrNt8ZKhtOo
-
-### Get data with deleted User
-GET {{tours}} HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzRlZDBhMWQ0ZTYxMWU1MDVmOWMwMCIsImlhdCI6MTU3MzMxNDM0MiwiZXhwIjoxNTc1OTA2MzQyfQ.GsXTCmAu8nEnuSfBbuiDpNNNMIwtp8BLbObFsu5_5j8
-
-### Get data with a User had changed password
-GET {{tours}} HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzQwYjkyY2E5ODYyNTRjM2FmMTY5NCIsImlhdCI6MTU3MzM1Njk2OSwiZXhwIjoxNTc1OTQ4OTY5fQ.iLmH-J59oAIZQjuQN-7pYEXbcvoYmqI_JnKpyHmE86E
-
-
 #-------------------------SIGN UP-------------------------#
 
 ### Sign up an user
-# @name signupAcc2
+# @name signupAcc3
 POST {{users}}/signup HTTP/1.1
 content-type: application/json
 
   {
-    "name": " Longo",
-    "email": "long123@gmail.com",
-    "password":"chienthangthanh",
-    "passwordConfirm":"chienthang"
+    "name": "Indonesia",
+    "email": "indonesia@gmail.com",
+    "password":"tengteng",
+    "passwordConfirm":"tengteng"
   }
-
+###  
+@tokenAcc3 = {{signupAcc3.response.body.token}}
 
 
 ### Sign up an user
@@ -169,7 +108,7 @@ content-type: application/json
 #======================ACTION AFTER AUTHENTICATION======================#
 
 ### Set Token
-@token = {{tokenAcc1}}
+@token = {{tokenAcc3}}
 
 #--------------------------------------------------------------------------#
 
@@ -214,5 +153,10 @@ Authorization: Bearer {{token}}
 
 {
   "name": "Choi Lon choi bo",
-  "role": "guide"
+  "active": "true"
 }
+
+### Delete User
+
+DELETE {{users}}/deleteMe HTTP/1.1
+Authorization: Bearer {{token}}

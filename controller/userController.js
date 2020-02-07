@@ -23,7 +23,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-  const allowedFields = ['name', 'email', 'role'];
+  const allowedFields = ['name', 'email'];
 
   // 1 Create error if user POSTs unwanted fields names that are not allowed to be updated
 
@@ -36,36 +36,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         )
       );
   });
-  /*
-  // 1 Create error if user POSTs password data
 
-  if (req.body.password || req.body.passwordConfirm)
-    return next(
-      new AppError(
-        'This route is not for update password!!! Please use /updateMyPassword!!!',
-        400
-      )
-    );
-
-  // 2 Filtered out unwanted fields names that are not allowed to be updated
-
-  // - Check the valid of input field but Bypass the password validation
-  // - Not allow change role of user
-
-    const filterObj = (inputObj, allowedObj) => {
-    const filteredObj = {};
-
-    Object.keys(inputObj).forEach(el => {
-      if (allowedObj.includes(el)) filteredObj[el] = inputObj[el];
-    });
-    return filteredObj;
-  }; 
-
-  const filteredReqBody = filterObj(req.body, allowedFields);
-
-  */
-
-  // 3 Update User data
+  // 2 Update User data
 
   const updatedUser = await User.findByIdAndUpdate(
     req.user.id,
@@ -82,6 +54,15 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     data: {
       user: updatedUser
     }
+  });
+});
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  res.status(200).json({
+    status: 'success',
+    data: null
   });
 });
 
