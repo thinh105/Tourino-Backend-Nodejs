@@ -4,8 +4,6 @@ const catchAsync = require('../utils/catchAsync');
 const sendEmail = catchAsync(async options => {
   // 1 Create a transporter
 
-  // Mailtrap - the service to fake to send emails
-
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
@@ -17,8 +15,8 @@ const sendEmail = catchAsync(async options => {
 
   // 2 Define the email options
   const mailOptions = {
-    from: 'Bastian Nguyen <hello@natour.io',
-    to: options.email,
+    from: 'Bastian Nguyen <hello@natour.io>',
+    to: `${options.name} <${options.email}>`,
     subject: options.subject,
     text: options.message
     //html:

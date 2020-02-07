@@ -3,7 +3,7 @@
 
 
 
-### Sign up another user
+### Sign up user
 POST {{users}}/signup HTTP/1.1
 content-type: application/json
 
@@ -63,6 +63,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzRlZDBhM
 GET {{tours}} HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzQwYjkyY2E5ODYyNTRjM2FmMTY5NCIsImlhdCI6MTU3MzM1Njk2OSwiZXhwIjoxNTc1OTQ4OTY5fQ.iLmH-J59oAIZQjuQN-7pYEXbcvoYmqI_JnKpyHmE86E
 
+
+#-------------------------SIGN UP-------------------------#
+
+### Sign up an user
+# @name signupAcc2
+POST {{users}}/signup HTTP/1.1
+content-type: application/json
+
+  {
+    "name": " Longo",
+    "email": "long123@gmail.com",
+    "password":"chienthangthanh",
+    "passwordConfirm":"chienthang"
+  }
+
+
+
 ### Sign up an user
 # @name signupAcc2
 POST {{users}}/signup HTTP/1.1
@@ -78,10 +95,8 @@ content-type: application/json
 ###
 @tokenAcc2 = {{signupAcc2.response.body.token}}
 
-### Get all tour
-GET {{tours}} HTTP/1.1
-Authorization: Bearer {{tokenAcc2}}
 
+#-------------------------LOG IN-------------------------#
 
 ### Login and get data
 # @name acc1
@@ -89,30 +104,14 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "longtuan1279@gmail.com",
+  "email": "long123@gmail.com",
   "password":"12345678905"
 }
 
 ###
 @tokenAcc1 = {{acc1.response.body.token}}
 
-### Get all tour
-GET {{tours}} HTTP/1.1
-Authorization: Bearer {{tokenAcc1}}
 
-### Get a tour
-GET {{tours}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
-Authorization: Bearer {{tokenAcc1}}
-
-### Update tour
-PATCH {{tours}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
-content-type: application/json
-Authorization: Bearer {{tokenAcc1}}
-
-{
-	"name": "Ha Long Boi Loi",
-  "price": "1999"
-}
 
 ### Sign up 'tulanh' user
 # @name tulanh1
@@ -137,18 +136,83 @@ content-type: application/json
 }
 
 
-###
+### Token tu Lanh
 @tokentulanh = {{tulanh.response.body.token}}
 
-### Delete tour
-DELETE {{tours}}/5d943906721ba4595616e735 HTTP/1.1
-Authorization: Bearer {{tokentulanh}}
 
+
+
+#-------------------------FORGET AND RESET PASSWORD-------------------------#
 
 ### forgot password
 POST {{users}}/forgotPassword HTTP/1.1
 content-type: application/json
 
 {
-  "email": "long123@gmail.com"
+  "email": "longtuan@gmail.com"
+}
+
+### reset Password
+# @name resetPass
+PATCH {{users}}/resetPassword/265e433de9a7c05c6005fc1ad8811f37cc8e90e32177b96f81ec06164d476c70
+content-type: application/json
+
+{
+  "password":"12345678905",
+  "passwordConfirm": "12345678905"
+}
+
+### Token reset Pass
+@tokenResetPass = {{resetPass.response.body.token}}
+
+
+#======================ACTION AFTER AUTHENTICATION======================#
+
+### Set Token
+@token = {{tokenAcc1}}
+
+#--------------------------------------------------------------------------#
+
+### Get all tour
+GET {{tours}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Get a tour
+GET {{tours}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Delete tour - tulanh or leadGuide
+DELETE {{tours}}/5d943906721ba4595616e735 HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Update tour
+PATCH {{tours}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+	"name": "Ha Long Boi Loi Mua Lu",
+  "price": "1999"
+}
+
+### Update Password
+PATCH {{users}}/updateMyPassword HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "oldPassword":"1234567890555",
+  "newPassword":"12345678905",
+  "passwordConfirm": "12345678905"
+}
+
+
+### Update Me
+PATCH {{users}}/updateMe HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Choi Lon choi bo",
+  "role": "guide"
 }

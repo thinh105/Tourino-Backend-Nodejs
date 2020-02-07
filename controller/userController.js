@@ -22,6 +22,69 @@ exports.getUser = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.updateMe = catchAsync(async (req, res, next) => {
+  const allowedFields = ['name', 'email', 'role'];
+
+  // 1 Create error if user POSTs unwanted fields names that are not allowed to be updated
+
+  Object.keys(req.body).forEach(el => {
+    if (!allowedFields.includes(el))
+      return next(
+        new AppError(
+          `This route is used just for update ${allowedFields}!!! Please try again!!!`,
+          400
+        )
+      );
+  });
+  /*
+  // 1 Create error if user POSTs password data
+
+  if (req.body.password || req.body.passwordConfirm)
+    return next(
+      new AppError(
+        'This route is not for update password!!! Please use /updateMyPassword!!!',
+        400
+      )
+    );
+
+  // 2 Filtered out unwanted fields names that are not allowed to be updated
+
+  // - Check the valid of input field but Bypass the password validation
+  // - Not allow change role of user
+
+    const filterObj = (inputObj, allowedObj) => {
+    const filteredObj = {};
+
+    Object.keys(inputObj).forEach(el => {
+      if (allowedObj.includes(el)) filteredObj[el] = inputObj[el];
+    });
+    return filteredObj;
+  }; 
+
+  const filteredReqBody = filterObj(req.body, allowedFields);
+
+  */
+
+  // 3 Update User data
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    req.body, //filteredReqBody,
+    {
+      new: true, //  true to return the modified document rather than the original.
+      runValidators: true //  runs update validators on this command.
+      // Update validators validate the update operation against the model's schema.
+    }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser
+    }
+  });
+});
+
 exports.updateUser = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.params.id, {
     new: true,
@@ -38,6 +101,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     dataUpdate: { user }
   });
 });
+
 exports.deleteUser = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndDelete(req.params.id);
 

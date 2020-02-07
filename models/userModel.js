@@ -64,14 +64,21 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-// an instance medthod to check password correct or not
+// Update changedPasswordAt property for the user
+userSchema.pre('save', function(next) {
+  if (!this.isModified('password') || this.isNew) return next();
 
-userSchema.methods.correctPassword = async (candidatePassword, userPassword) =>
+  this.passwordChangedAt = Date.now();
+  next();
+});
+
+// an instance medthod to check password correct or not
+userSchema.methods.comparePassword = async (candidatePassword, userPassword) =>
   await bcrypt.compare(candidatePassword, userPassword);
 
 // an instance method to check Password changed after Token issued or not
 
-userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+userSchema.methods.changedPasswordAfterToken = function(JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
@@ -92,7 +99,7 @@ userSchema.methods.createPasswordResetToken = function() {
     .update(resetToken)
     .digest('hex');
 
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; //(= 10 minutes)
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; //(valid for 10 minutes)
   return resetToken;
 };
 

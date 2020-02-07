@@ -138,8 +138,8 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
 exports.updateTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
+    new: true, // return the new Update document to client
+    runValidators: true // run the validator
   });
 
   if (!tour) return next(new AppError('No tour found with that ID!!!', 404));

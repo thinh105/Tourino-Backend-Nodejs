@@ -6,5 +6,7 @@
   "trailingComma": "none",
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "prettier.eslintIntegration": true,
+  "editor.formatOnSave": true
 }
