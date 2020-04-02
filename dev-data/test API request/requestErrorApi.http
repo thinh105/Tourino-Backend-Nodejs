@@ -21,7 +21,7 @@ GET {{baseUrl}}/tour-stats HTTP/1.1
 GET {{baseUrl}} HTTP/1.1
 
 ### Get a tour
-GET {{baseUrl}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+GET {{baseUrl}}/5e466b62ad55dd18c237a467 HTTP/1.1
 
 ### Get a tour with wrong ID
 GET {{baseUrl}}/aaaaaaaaaaaaaaa HTTP/1.1

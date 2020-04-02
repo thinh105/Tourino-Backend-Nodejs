@@ -36,6 +36,43 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getTour = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findById(req.params.id);
+
+  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
+
+  res.status(200).json({
+    status: 'success',
+    data: { tour }
+  });
+});
+
+exports.updateTour = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+    new: true, // return the new Update document to client
+    runValidators: true // run the validator
+  });
+
+  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
+
+  res.status(200).json({
+    status: 'success',
+    data: { tour }
+  });
+});
+
+exports.deleteTour = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findByIdAndDelete(req.params.id);
+
+  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
+
+  // in RESTful API, common practice is not send anything back to client when deleted
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
+});
+
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stat = await Tour.aggregate([
     {
@@ -124,40 +161,3 @@ exports.aliasTopFiveTours = (req, res, next) => {
   req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
 };
-
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id);
-
-  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
-
-  res.status(200).json({
-    status: 'success',
-    data: { tour }
-  });
-});
-
-exports.updateTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true, // return the new Update document to client
-    runValidators: true // run the validator
-  });
-
-  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
-
-  res.status(200).json({
-    status: 'success',
-    data: { tour }
-  });
-});
-
-exports.deleteTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndDelete(req.params.id);
-
-  if (!tour) return next(new AppError('No tour found with that ID!!!', 404));
-
-  // in RESTful API, common practice is not send anything back to client when deleted
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
-});

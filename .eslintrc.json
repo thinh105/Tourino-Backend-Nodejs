@@ -1,20 +1,33 @@
 {
-  "extends": ["airbnb", "prettier", "plugin:node/recommended"],
-  "plugins": ["prettier"],
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:node/recommended",
+    "eslint:recommended"
+  ],
+  "plugins": ["prettier", "jest"],
   "rules": {
     "prettier/prettier": "error",
     "spaced-comment": "off",
     "no-console": "warn",
     "consistent-return": "off",
     "func-names": "off",
-    "object-shorthand": "off",
+    "object-shorthand": "error",
     "no-process-exit": "off",
-    "no-param-reassign": "off",
+    "no-param-reassign": "error",
     "no-return-await": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "error",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
+  },
+  "env": {
+    "jest/globals": true
   }
 }

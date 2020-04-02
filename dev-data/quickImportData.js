@@ -1,15 +1,19 @@
+/* eslint-disable no-console */
+
 const fs = require('fs');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+
+console.log(`${__dirname}`);
+
+require('dotenv').config({ path: `${__dirname}/../config.env` });
+// connect environment variable config.env file
 
 const Tour = require('../models/tourModel');
-
-dotenv.config({ path: './config.env' });
 
 // const DB = process.env.DATABASE_LOCAL;
 
 const DB = process.env.DATABASE.replace(
-  '<password>',
+  '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
 
@@ -23,7 +27,7 @@ mongoose
   .then(() => console.log('DB connection succesful!'));
 
 const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf8')
+  fs.readFileSync(`${__dirname}/data/tours.json`, 'utf8')
 ); // ./ refer to the folder that node start
 
 const importData = async () => {
@@ -44,12 +48,16 @@ const deleteData = async () => {
   }
 };
 
-//importData();
-//deleteData();
-
-// console.log(process.argv);
+//console.log(process.argv);
+// [
+//   '/usr/bin/node',
+//   '/home/bastian/myProjects/Node/Jonas Course - Natour/dev-data/quickImportData',
+//   '-i'
+// ]
 
 if (process.argv[2] === '-i') importData();
 if (process.argv[2] === '-d') deleteData();
 
-// how to run ? node dev-data/quickImport -i
+// how to run ?
+// node dev-data/quickImportData -i
+// node dev-data/quickImportData -d

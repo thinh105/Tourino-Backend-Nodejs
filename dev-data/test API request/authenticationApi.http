@@ -50,6 +50,21 @@ content-type: application/json
 ###
 @tokenAcc1 = {{acc1.response.body.token}}
 
+### Login and get data
+# @name acc3
+POST {{users}}/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "indonesia@gmail.com",
+  "password":"tengteng"
+}
+
+###
+@tokenAcc3 = {{acc3.response.body.token}}
+
+
+
 
 
 ### Sign up 'tulanh' user
@@ -76,8 +91,8 @@ content-type: application/json
 
 
 ### Token tu Lanh
-@tokentulanh = {{tulanh.response.body.token}}
-
+#@tokentulanh = {{tulanh.response.body.token}}
+@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzhjZjM3YWY5Y2E5Mjc0ODJmNTYxYiIsImlhdCI6MTU4NTgzNjk1MiwiZXhwIjoxNTg4NDI4OTUyfQ.MMHhLAihJ4U8unrRWYTVCWWuqWBnlH7EapNT1wTuxm0
 
 
 
@@ -108,7 +123,7 @@ content-type: application/json
 #======================ACTION AFTER AUTHENTICATION======================#
 
 ### Set Token
-@token = {{tokenAcc3}}
+@token = {{tokentulanh}}
 
 #--------------------------------------------------------------------------#
 
@@ -117,7 +132,7 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+GET {{tours}}/5e466b62ad55dd18c237a467 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete tour - tulanh or leadGuide
@@ -125,13 +140,12 @@ DELETE {{tours}}/5d943906721ba4595616e735 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Update tour
-PATCH {{tours}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+PATCH {{tours}}/5e466b62ad55dd18c237a467 HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-	"name": "Ha Long Boi Loi Mua Lu",
-  "price": "1999"
+   "guides":["5dc8c3ee683a62215377d263","5dc8cf37af9ca927482f561b","5dca1fd061eb9c32b7d54a5a"]
 }
 
 ### Update Password
