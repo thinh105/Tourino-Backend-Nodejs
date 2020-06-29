@@ -5,16 +5,16 @@ class APIFeatures {
   }
 
   filter() {
-    const queryObj = { ...this.reqQuery }; // using destructuring to hard copy in ES6
+    const queryObj = { ...this.reqQuery }; // using destructuring to copy in ES6
 
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach(el => delete queryObj[el]);
+    excludedFields.forEach((el) => delete queryObj[el]);
 
     let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     this.query = this.query.find(JSON.parse(queryStr));
-    //let query = Tour.find();
+    // let query = Tour.find();
 
     return this;
   }
@@ -22,7 +22,7 @@ class APIFeatures {
   sort() {
     if (this.reqQuery.sort) {
       const sortBy = this.reqQuery.sort.split(',').join(' ');
-      this.query = this.query.sort(sortBy); //sort is the Mongoose method
+      this.query = this.query.sort(sortBy); // sort is the Mongoose method
     } else {
       this.query = this.query.sort('-ratingsAverage');
     }

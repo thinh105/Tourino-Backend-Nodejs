@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv').config({ path: './config.env' });
 // connect environment variable config.env file
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
   console.log(err.message);
   process.exit(1);
@@ -17,16 +17,17 @@ const DB = process.env.DATABASE.replace(
   process.env.DATABASE_PASSWORD
 );
 
-//const DB = process.env.DATABASE_LOCAL;
+// const DB = process.env.DATABASE_LOCAL;
 
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
-  .then(() => console.log('DB connection succesful!'));
+  .then(() => console.log('DB connection succesful!'))
+  .catch((err) => console.log(err));
 
 const port = process.env.PORT || 6969;
 
@@ -34,15 +35,15 @@ const server = app.listen(port, () => {
   console.log(`The server is running in port ${port} !`);
 });
 
-//Unhandled promise rejections
+// Unhandled promise rejections
 
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   console.log(err);
 
   console.log('Unhandled promise rejections!!! Shutting down...');
 
   // shutdown gracefully with first close the server, and then shutdown the application
-  //server.close give server time to finish all the requests before shutdown the app
+  // server.close give server time to finish all the requests before shutdown the app
   server.close(() => {
     process.exit(1);
   });

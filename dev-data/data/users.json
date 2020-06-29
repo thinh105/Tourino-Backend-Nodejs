@@ -2,8 +2,8 @@
   {
     "_id": "5c8a1d5b0190b214360dc057",
     "name": "Jonas Schmedtmann",
-    "email": "admin@natours.io",
-    "role": "admin",
+    "email": "tulanh@natours.io",
+    "role": "tulanh",
     "active": true,
     "photo": "user-1.jpg",
     "password": "$2a$12$Q0grHjH9PXc6SxivC8m12.2mZJ9BbKcgFpwSG4Y1ZEII8HJVzWeyS"

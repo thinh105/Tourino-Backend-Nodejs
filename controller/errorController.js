@@ -1,11 +1,11 @@
 const AppError = require('../utils/appError');
 
-const handleCastErrorDB = err => {
+const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}!!!`;
   return new AppError(message, 400);
 };
 
-const handleDuplicateFieldsDB = err => {
+const handleDuplicateFieldsDB = (err) => {
   // errmsg: 'E11000 duplicate key error collection: natour.tours index: name_1 dup key: { : "Ha Nam Bay" }',
   // Use Regex to get the value in errmsg
 
@@ -15,8 +15,8 @@ const handleDuplicateFieldsDB = err => {
   return new AppError(message, 400);
 };
 
-const handleValidationErrorDB = err => {
-  const errors = Object.values(err.errors).map(el => el.message); // get a string of error messages
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((el) => el.message); // get a string of error messages
 
   const message = `Invalid input: ${errors.join('. ')}`;
 
@@ -31,7 +31,7 @@ const sendErrorDevelopment = (err, res) => {
     status: err.status,
     error: err,
     message: err.message,
-    stack: err.stack
+    stack: err.stack,
   });
 };
 
@@ -40,10 +40,10 @@ const sendErrorProduction = (err, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
-      message: err.message
+      message: err.message,
     });
 
-    //Programming or other unknown error: don't leak error details
+    // Programming or other unknown error: don't leak error details
   } else {
     // 1) log error
     // eslint-disable-next-line no-console
@@ -52,7 +52,7 @@ const sendErrorProduction = (err, res) => {
     // 2) Send generic message to client
     res.status(500).json({
       status: 'error',
-      message: 'Sorry, something went wrong!!!'
+      message: 'Sorry, something went wrong!!!',
     });
   }
 };
@@ -65,7 +65,7 @@ module.exports = (err, req, res, next) => {
     sendErrorDevelopment(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     // not a good practise to override the arguments of function.
-    //create a hard copy
+    // create a hard copy
 
     let error = { ...err };
 

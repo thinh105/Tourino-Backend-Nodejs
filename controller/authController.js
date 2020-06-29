@@ -6,9 +6,9 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 
-const signToken = id =>
+const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
 const createAndSendToken = (user, statusCode, res) => {
@@ -16,7 +16,7 @@ const createAndSendToken = (user, statusCode, res) => {
 
   res.status(statusCode).json({
     status: 'success',
-    token
+    token,
   });
 };
 
@@ -38,7 +38,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 2 Check if user exits && password is correct
 
-  const user = await User.findOne({ email }).select('+password'); //{email:email} === {email} in ES6 || +password because it was hidden in db
+  const user = await User.findOne({ email }).select('+password'); // {email:email} === {email} in ES6 || +password because it was hidden in db
 
   // double check if user and password of that user is correct or not
   // write like that because if no user ~> no user.password ~> function go wrong : Cannot read property 'correctPassword' of null
@@ -77,7 +77,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!user)
     return next(new AppError('This user does no longer exist!!!', 401));
 
-  //4 Check if user changed password after the token was issued
+  // 4 Check if user changed password after the token was issued
   if (user.changedPasswordAfterToken(verifiedToken.iat))
     return next(
       new AppError(
@@ -86,7 +86,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       )
     );
 
-  req.user = user; // tranfer to the next middleware function
+  req.user = user; // tranfer data logged user to the next middleware function
   next();
 });
 
@@ -129,7 +129,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       name: user.name,
       email: user.email,
       subject: 'Your password reset token (valid for 10 min)',
-      message
+      message,
     });
   } catch (err) {
     user.passwordResetToken = undefined;
@@ -150,7 +150,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1 Get user based on the token
 
-  //encrypt the plain token user provided
+  // encrypt the plain token user provided
   const hashedToken = crypto
     .createHash('sha256')
     .update(req.params.token)
@@ -159,7 +159,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // find the user on db
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() } // check token has not expired
+    passwordResetExpires: { $gt: Date.now() }, // check token has not expired
   });
   // 2 if token has not expired and there is user on db, set the new password
 

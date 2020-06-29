@@ -12,13 +12,13 @@ GET {{users}}/monthly-splan/:2021
 GET {{users}} HTTP/1.1
 
 ### Get a user
-GET {{users}}/5dc40b92ca986254c3af1694 HTTP/1.1
+GET {{users}}/5c8a1dfa2f8fb814b56fa181 HTTP/1.1
 
 ### Get a 404 user
 GET {{users}}/5d99ad17cbc74c33e46d9c60 HTTP/1.1
 
 
-### Post a user
+### Create a user
 POST {{users}} HTTP/1.1
 content-type: application/json
 
@@ -54,16 +54,15 @@ GET {{users}}?limit=6&page=1 HTTP/1.1
 
 							
 ### Update user
-PATCH {{users}}/5dc40b92ca986254c3af1694 HTTP/1.1
+PATCH {{users}}/5c8a1dfa2f8fb814b56fa181 HTTP/1.1
 content-type: application/json
 
 {
-"password": "12345678905",
-"passwordConfirm": "12345678905",
-"passwordChangedAt": "2019-05-10"
+"password": "$2a$12$hP1h2pnNp7wgyZNRwPsOTeZuNzWBv7vHmsR3DT/OaPSUBQT.y0S..",
+"passwordConfirm": "$2a$12$hP1h2pnNp7wgyZNRwPsOTeZuNzWBv7vHmsR3DT/OaPSUBQT.y0S.."
 }
 					
 
 ### Delete user
 DELETE {{users}}/5dc4ed0a1d4e611e505f9c00 HTTP/1.1
-					
+					 

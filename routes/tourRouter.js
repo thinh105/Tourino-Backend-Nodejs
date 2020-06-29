@@ -2,22 +2,36 @@ const express = require('express');
 const tourController = require('../controller/tourController');
 const authController = require('../controller/authController');
 
+const reviewRouter = require('./reviewRouter');
+
 const router = express.Router();
 
-//router.param('id', tourController.checkId);
+// Nested Routes with Express
+router.use('/:tourId/reviews', reviewRouter); // the same on app.js ~> routes
 
 router.route('/tour-stats').get(tourController.getTourStats);
 
-router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
+router
+  .route('/monthly-plan/:year')
+  .get(
+    authController.protect,
+    authController.restrictTo('tulanh', 'lead-guide', 'guide'),
+    tourController.getMonthlyPlan
+  );
 
 router
-  .route('/top-five-tours') // to avoid conflix with route('/:id'), place this router above router /:id
+  .route('/top-five-tours')
+  // to avoid conflix with route('/:id'), place this router above router /:id
   .get(tourController.aliasTopFiveTours, tourController.getAllTours);
 
 router
   .route('/')
   .get(authController.protect, tourController.getAllTours)
-  .post(tourController.createTour);
+  .post(
+    authController.protect,
+    authController.restrictTo('tulanh', 'lead-guide'),
+    tourController.createTour
+  );
 
 router
   .route('/:id')

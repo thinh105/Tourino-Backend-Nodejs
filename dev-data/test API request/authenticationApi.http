@@ -1,5 +1,6 @@
 @users = http://127.0.0.1:6969/api/v1/users
 @tours = http://127.0.0.1:6969/api/v1/tours
+@review = http://127.0.0.1:6969/api/v1/reviews
 
 
 #-------------------------SIGN UP-------------------------#
@@ -25,10 +26,10 @@ POST {{users}}/signup HTTP/1.1
 content-type: application/json
 
   {
-    "name": " Longo",
-    "email": "long123@gmail.com",
-    "password":"chienthangthanh",
-    "passwordConfirm":"chienthangthanh"
+    "name": "Bingo Doremon",
+    "email": "doremon@gmail.com",
+    "password":"doremonnobita",
+    "passwordConfirm":"doremonnobita"
   }
 
 ###
@@ -85,14 +86,14 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "longtuan@gmail.com",
-  "password":"12345678905"
+  "email": "tulanh@natours.io",
+  "password": "test1234"
 }
 
 
 ### Token tu Lanh
 #@tokentulanh = {{tulanh.response.body.token}}
-@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkYzhjZjM3YWY5Y2E5Mjc0ODJmNTYxYiIsImlhdCI6MTU4NTgzNjk1MiwiZXhwIjoxNTg4NDI4OTUyfQ.MMHhLAihJ4U8unrRWYTVCWWuqWBnlH7EapNT1wTuxm0
+@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5MDM3NDU0MiwiZXhwIjoxNTkyOTY2NTQyfQ.FG7Yhouh6P7R6M-cBpnU8aZTVlcXPfHBY64R6geih2w
 
 
 
@@ -103,7 +104,7 @@ POST {{users}}/forgotPassword HTTP/1.1
 content-type: application/json
 
 {
-  "email": "longtuan@gmail.com"
+  "email": "tulanh@natours.io"
 }
 
 ### reset Password
@@ -132,11 +133,11 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5e466b62ad55dd18c237a467 HTTP/1.1
+GET {{tours}}/5c88fa8cf4afda39709c2966 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete tour - tulanh or leadGuide
-DELETE {{tours}}/5d943906721ba4595616e735 HTTP/1.1
+DELETE {{tours}}/5c88fa8cf4afda39709c2951 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Update tour
@@ -170,7 +171,21 @@ Authorization: Bearer {{token}}
   "active": "true"
 }
 
-### Delete User
+### User Delete him/her self
 
 DELETE {{users}}/deleteMe HTTP/1.1
+Authorization: Bearer {{token}}
+
+
+### Get all users
+GET {{users}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+
+### Delete user
+DELETE {{users}}/5ec5155745f1f24d1f9d92b9 HTTP/1.1
+
+
+### Abour Me
+GET {{users}}/me
 Authorization: Bearer {{token}}
