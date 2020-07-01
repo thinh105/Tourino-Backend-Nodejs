@@ -9,8 +9,8 @@ const tourSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       maxlength: [
-        70,
-        'A tour name must have less than or equal to 40 characters',
+        80,
+        'A tour name must have less than or equal to 80 characters',
       ],
       minlength: [
         8,
@@ -23,21 +23,13 @@ const tourSchema = new mongoose.Schema(
       min: [1, 'Rating must be above 1.0'],
       required: [true, 'A tour must have a duration'],
       validate: {
-        validator: Number.isInteger && Number > 0,
+        validator: (num) => num.isInteger && num > 0,
         message: 'Duration must be a Natural Number',
       },
     },
-    maxGroupSize: {
-      type: Number,
-      required: [true, 'A tour must have a group size'],
-    },
-    difficulty: {
-      type: String,
-      required: [true, 'A tour must have a difficulty'],
-      enum: {
-        values: ['easy', 'medium', 'difficult'],
-        message: 'Difficulty is either: easy, medium, difficult',
-      },
+    tagList: {
+      type: [String],
+      required: [true, 'A tour must have tags'],
     },
     ratingsAverage: {
       type: Number,
@@ -53,6 +45,10 @@ const tourSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: [true, 'A tour must have a price'],
+      validate: {
+        validator: (num) => num > 0,
+        message: 'Price must be greater than 0',
+      },
     },
     summary: {
       type: String,
@@ -68,9 +64,7 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A tour must have a image cover'],
     },
-    images: {
-      type: [String],
-    },
+    images: [{ src: String, text: String }],
     createAt: {
       type: Date,
       default: Date.now(), // Mongoose will auto convert to today's date
@@ -83,34 +77,20 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    startLocation: {
-      // GeoJSON
-      type: {
-        type: String,
-        default: 'Point',
-        enum: ['Point'],
-      },
-      coordinates: [Number],
-      address: String,
-      description: String,
-    },
-    locations: [
+    timeline: [
       {
-        type: {
-          type: String,
-          default: 'Point',
-          enum: ['Point'],
+        day: {
+          type: Number,
+          required: [true, "A timeline must have day's number"],
         },
-        coordinates: [Number],
-        address: String,
-        description: String,
-        day: Number,
-      },
-    ],
-    guides: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
+        title: {
+          type: String,
+          required: [true, "A timeline must have day's title"],
+        },
+        description: {
+          type: [String],
+          required: [true, "A timeline must have day's description"],
+        },
       },
     ],
   },

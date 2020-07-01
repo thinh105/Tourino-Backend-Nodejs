@@ -16,9 +16,9 @@ require('dotenv').config({
 // const DB = process.env.DATABASE_LOCAL;
 
 const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
+  '<password>',
   process.env.DATABASE_PASSWORD
-);
+).replace('<dbname>', process.env.DATABASE_NAME);
 
 mongoose
   .connect(DB, {
@@ -34,11 +34,11 @@ mongoose
 const importData = async () => {
   // READ JSON FILE
   const tours = JSON.parse(
-    fs.readFileSync(path.join(__dirname, 'data', 'tours.json'), 'utf8')
+    fs.readFileSync(path.join(__dirname, 'data', 'tourVN.json'), 'utf8')
   );
-  const reviews = JSON.parse(
-    fs.readFileSync(path.join(__dirname, 'data', 'reviews.json'), 'utf8')
-  );
+  // const reviews = JSON.parse(
+  //   fs.readFileSync(path.join(__dirname, 'data', 'reviews.json'), 'utf8')
+  // );
   const users = JSON.parse(
     fs.readFileSync(path.join(__dirname, 'data', 'users.json'), 'utf8')
   );
@@ -57,7 +57,7 @@ const importData = async () => {
     // have to use create to run the Document middleware - not support insertMany
     await Tour.create(tours);
     await User.create(users, { validateBeforeSave: false });
-    await Review.create(reviews);
+    // await Review.create(reviews);
 
     console.log('Data successfully loaded');
   } catch (err) {
