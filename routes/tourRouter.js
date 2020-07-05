@@ -26,7 +26,8 @@ router
 
 router
   .route('/')
-  .get(authController.protect, tourController.getAllTours)
+  .get(tourController.getAllTours)
+  // .get(authController.protect, tourController.getAllTours)
   .post(
     authController.protect,
     authController.restrictTo('tulanh', 'lead-guide'),
@@ -34,7 +35,7 @@ router
   );
 
 router
-  .route('/:id')
+  .route('/:slug')
   .get(authController.protect, tourController.getTour)
   .patch(authController.protect, tourController.updateTour)
   .delete(

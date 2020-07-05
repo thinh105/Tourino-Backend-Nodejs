@@ -44,8 +44,8 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "long123@gmail.com",
-  "password":"12345678905"
+  "email": "loulou@example.com",
+  "password":"test1234"
 }
 
 ###

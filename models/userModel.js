@@ -34,10 +34,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please comfirm a password!!!'],
     validate: {
+      // this only works on CREATE and SAVE not Update!!!!
+      // whenever we want to update a user
+      // we will always have to use SAVE not FindOneAndUpdate
       validator(el) {
-        // this only works on SAVE not Update!!!!
-        // whenever we want to update a user
-        // we will always have to use SAVE not FindOneAndUpdate
         return el === this.password;
       },
       message: 'Passwords are not the same!!!',
@@ -53,9 +53,11 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// ------------ ENCRYPTION PASSWORD ------------
 // pre-middleware on save
-// the encryption is then gonna be happened between the moment that we receive that data and the moment
-// where it's actually persisted to the database
+// the encryption is then gonna be happened between the moment that we receive that data
+// and the moment where it's actually persisted to the database
+// Need to be turn off when import old database
 
 userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
@@ -69,6 +71,14 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+//  ---------- Update changedPasswordAt property for the user ------------
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now();
+  next();
+});
+
 userSchema.pre(/^find/, function (next) {
   // this points to the current query
   // do not using arrow function
@@ -79,15 +89,7 @@ userSchema.pre(/^find/, function (next) {
   next();
 });
 
-// Update changedPasswordAt property for the user
-userSchema.pre('save', function (next) {
-  if (!this.isModified('password') || this.isNew) return next();
-
-  this.passwordChangedAt = Date.now();
-  next();
-});
-
-// an instance medthod to check password correct or not
+// ------------ an instance medthod to check password correct or not ------------
 userSchema.methods.comparePassword = async (
   candidatePassword,
   userPassword
@@ -96,8 +98,7 @@ userSchema.methods.comparePassword = async (
   return result;
 };
 
-// an instance method to check Password changed after Token issued or not
-
+// ------------ an instance method to check Password changed after Token issued or not ------------
 userSchema.methods.changedPasswordAfterToken = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(

@@ -28,7 +28,7 @@ exports.updateOne = (Model) =>
 
     res.status(200).json({
       status: 'success',
-      data: { data: document },
+      data: document,
     });
   });
 
@@ -38,16 +38,23 @@ exports.createOne = (Model) =>
 
     res.status(201).json({
       status: 'success',
-      data: {
-        data: doc,
-      },
+      data: doc,
     });
   });
 
-exports.getOne = (Model, populateOption) =>
+exports.getOne = (Model, Option = {}) =>
   catchAsync(async (req, res, next) => {
-    let query = Model.findById(req.params.id);
-    if (populateOption) query = query.populate(populateOption);
+    // specific option for Tour Controller
+    // getTour = factory.getOne(Tour, {
+    // findBySlug: true,
+    // populate: { path: 'reviews' },
+    // });
+
+    let query = Option.findBySlug
+      ? Model.findOne({ slug: req.params.slug })
+      : Model.findById(req.params.id);
+
+    if (Option.populate) query = query.populate(Option.populate);
 
     const document = await query;
 
@@ -56,7 +63,8 @@ exports.getOne = (Model, populateOption) =>
 
     res.status(200).json({
       status: 'success',
-      data: { data: document },
+      data: document,
+      // data: document,
     });
   });
 
@@ -78,6 +86,7 @@ exports.getAll = (Model) =>
     res.status(200).json({
       status: 'success',
       result: document.length,
-      data: { data: document },
+      // data: { data: document },
+      data: document,
     });
   });

@@ -27,15 +27,13 @@ const tourSchema = new mongoose.Schema(
         message: 'Duration must be a Natural Number',
       },
     },
-    tagList: {
+    tags: {
       type: [String],
       required: [true, 'A tour must have tags'],
     },
     ratingsAverage: {
       type: Number,
-      default: 3,
-      min: [1, 'Rating must be above 1.0'],
-      max: [5, 'Rating must be below 5.0'],
+      default: 0,
       set: (val) => Math.round(val * 10) / 10, // 4.666666 ~> 46.6666 ~> 47 ~> 4.7
     },
     ratingsQuantity: {
@@ -50,16 +48,20 @@ const tourSchema = new mongoose.Schema(
         message: 'Price must be greater than 0',
       },
     },
-    summary: {
-      type: String,
-      trim: true,
-      required: [true, 'A tour must have a summary'],
+    highlights: {
+      type: [String],
+      required: [true, 'A tour must have highlight'],
     },
-    description: {
-      type: String,
-      trim: true,
-      required: [true, 'A tour must have a description'],
-    },
+    // summary: {
+    //   type: String,
+    //   trim: true,
+    //   required: [true, 'A tour must have a summary'],
+    // },
+    // description: {
+    //   type: String,
+    //   trim: true,
+    //   required: [true, 'A tour must have a description'],
+    // },
     imageCover: {
       type: String,
       required: [true, 'A tour must have a image cover'],
@@ -77,22 +79,22 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    timeline: [
-      {
-        day: {
-          type: Number,
-          required: [true, "A timeline must have day's number"],
-        },
-        title: {
-          type: String,
-          required: [true, "A timeline must have day's title"],
-        },
-        description: {
-          type: [String],
-          required: [true, "A timeline must have day's description"],
-        },
-      },
-    ],
+    // timeline: [
+    //   {
+    //     day: {
+    //       type: Number,
+    //       required: [true, "A timeline must have day's number"],
+    //     },
+    //     title: {
+    //       type: String,
+    //       required: [true, "A timeline must have day's title"],
+    //     },
+    //     description: {
+    //       type: [String],
+    //       required: [true, "A timeline must have day's description"],
+    //     },
+    //   },
+    // ],
   },
   {
     toJSON: { virtuals: true }, // pass the virtuals properties to JSON
@@ -114,9 +116,11 @@ tourSchema.virtual('reviews', {
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre('save', function (next) {
   // generate random String at the end of Slug
-  this.slug = `${slugify(this.name, { lower: true })}-${Math.random()
-    .toString(36)
-    .substring(8)}`;
+  this.slug = `${slugify(this.name, {
+    lower: true,
+    locale: 'vi',
+    remove: /[*+~.()'"!:@]/g,
+  })}-${Math.random().toString(36).substring(8)}`;
   next();
 });
 

@@ -15,19 +15,20 @@ content-type: application/json
 
 ### Token tu Lanh
 #@tokentulanh = {{tulanh.response.body.token}}
-@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5MDM3NDU0MiwiZXhwIjoxNTkyOTY2NTQyfQ.FG7Yhouh6P7R6M-cBpnU8aZTVlcXPfHBY64R6geih2w
+@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5Mzk2NDkwMiwiZXhwIjoxNTk2NTU2OTAyfQ.uDJ24-yFz_HLK_HmX4pYzmIItlHRDbH1KH_9CqyPGrM
 
 ### Set Token
 @token = {{tokentulanh}}
 
 #-------------------------       CRUD FUNCTIONS       -------------------------#
 
+
 ### Get all tour
 GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5d99ad17cbc74c33e46d9c54 HTTP/1.1
+GET {{tours}}/da-nang-cu-lao-cham-hoi-an-ba-na-hills-xgw0o HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a tour

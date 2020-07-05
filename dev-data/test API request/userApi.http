@@ -12,7 +12,7 @@ GET {{users}}/monthly-splan/:2021
 GET {{users}} HTTP/1.1
 
 ### Get a user
-GET {{users}}/5c8a1dfa2f8fb814b56fa181 HTTP/1.1
+GET {{users}}/5c8a1d5b0190b214360dc057 HTTP/1.1
 
 ### Get a 404 user
 GET {{users}}/5d99ad17cbc74c33e46d9c60 HTTP/1.1

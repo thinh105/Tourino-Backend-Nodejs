@@ -32,18 +32,26 @@ exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // 1 check if email and password exist
-
   if (!email || !password)
     return next(new AppError('Please provide email & password!!!', 400));
 
   // 2 Check if user exits && password is correct
+  const user = await User.findOne({ email }).select('+password');
 
-  const user = await User.findOne({ email }).select('+password'); // {email:email} === {email} in ES6 || +password because it was hidden in db
+  // {email:email} === {email} in ES6
+  // +password because it was hidden in db
 
   // double check if user and password of that user is correct or not
   // write like that because if no user ~> no user.password ~> function go wrong : Cannot read property 'correctPassword' of null
-  if (!user || !(await user.comparePassword(password, user.password)))
-    return next(new AppError('Incorect Email or Password!!!', 401));
+
+  // if (!user || !(await user.comparePassword(password, user.password)))
+  //   return next(new AppError('Incorect Email or Password!!!', 401));
+
+  console.log(user, user.password);
+
+  if (!user) return next(new AppError('Incorect Email!!!', 401));
+  if (!(await user.comparePassword(password, user.password)))
+    return next(new AppError('Incorect Password!!!', 401));
 
   // 3 If everything is ok, send token to client
   createAndSendToken(user, 200, res);
@@ -87,6 +95,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
 
   req.user = user; // tranfer data logged user to the next middleware function
+
   next();
 });
 

@@ -1,20 +1,37 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
-const AppError = require('./utils/appError');
-
-const app = express();
+const cors = require('cors');
 
 const tourRouter = require('./routes/tourRouter');
 const userRouter = require('./routes/userRouter');
 const reviewRouter = require('./routes/reviewRouter');
 
+const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
+
+const app = express();
 
 // 1 MIDDLEWARE
 
-app.use(express.json()); // build-in middleware to get req.body ~ req.query
+const whitelist = [
+  'http://localhost:8080',
+  'http://localhost:8081',
+  '::ffff:127.0.0.1',
+];
 
+const corsOptions = {
+  origin(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+// app.use(cors(corsOptions));
+
+app.use(express.json()); // build-in middleware to get req.body ~ req.query
 app.use(express.static(path.join('__dirname', 'public'))); //  `${__dirname}/public`));
 
 // app.use((req, res, next) => {

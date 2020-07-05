@@ -36,9 +36,9 @@ const importData = async () => {
   const tours = JSON.parse(
     fs.readFileSync(path.join(__dirname, 'data', 'tourVN.json'), 'utf8')
   );
-  // const reviews = JSON.parse(
-  //   fs.readFileSync(path.join(__dirname, 'data', 'reviews.json'), 'utf8')
-  // );
+  const reviews = JSON.parse(
+    fs.readFileSync(path.join(__dirname, 'data', 'reviews.json'), 'utf8')
+  );
   const users = JSON.parse(
     fs.readFileSync(path.join(__dirname, 'data', 'users.json'), 'utf8')
   );
@@ -49,14 +49,18 @@ const importData = async () => {
     // await Review.insertMany(reviews);
 
     // await Tour.insertMany(tours, { lean: true });
-    // await User.insertMany(users, { lean: true });
-    // await Review.insertMany(reviews, {
-    //   lean: true,
-    // });
 
-    // have to use create to run the Document middleware - not support insertMany
+    // have to use create to run the Document middleware (make slug) on Tour Model
+    // Document middleware not support insertMany
     await Tour.create(tours);
-    await User.create(users, { validateBeforeSave: false });
+
+    // lean: skips hydrating and validating the documents.
+    await User.insertMany(users, { lean: true });
+    await Review.insertMany(reviews, {
+      lean: true,
+    });
+
+    // await User.create(users, { validateBeforeSave: false });
     // await Review.create(reviews);
 
     console.log('Data successfully loaded');
@@ -88,6 +92,8 @@ const deleteData = async () => {
 
 if (process.argv[2] === '-i') importData();
 if (process.argv[2] === '-d') deleteData();
+
+// process.exit();
 
 // how to run ?
 // node dev-data/quickImportData -i
