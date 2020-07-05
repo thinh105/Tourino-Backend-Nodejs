@@ -28,7 +28,7 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/da-nang-cu-lao-cham-hoi-an-ba-na-hills-xgw0o HTTP/1.1
+GET {{tours}}/da-nang-ba-na-ngu-hanh-son-hoi-an-son-tra-g5wv HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a tour
@@ -53,8 +53,18 @@ Authorization: Bearer {{token}}
     "guides":["5dc8c3ee683a62215377d263","5dc8cf37af9ca927482f561b"]
   }
 
+### Update tour
+PATCH {{tours}}/da-nang-ba-na-ngu-hanh-son-hoi-an-son-tra-g5wv HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+ "price": 6999000
+}
+
+
 ### Delete tour
-DELETE {{tours}}/5d943906721ba4595616e735 HTTP/1.1
+DELETE {{tours}}/da HTTP/1.1
 Authorization: Bearer {{token}}
 
 

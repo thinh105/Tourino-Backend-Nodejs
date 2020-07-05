@@ -8,11 +8,15 @@ const factory = require('./handlerFactory');
 exports.getAllTours = factory.getAll(Tour);
 exports.getTour = factory.getOne(Tour, {
   findBySlug: true,
-  populate: { path: 'reviews' },
+  // populate: { path: 'reviews' },
 });
 exports.createTour = factory.createOne(Tour);
-exports.updateTour = factory.updateOne(Tour);
-exports.deleteTour = factory.deleteOne(Tour);
+exports.updateTour = factory.updateOne(Tour, {
+  findBySlug: true,
+});
+exports.deleteTour = factory.deleteOne(Tour, {
+  findBySlug: true,
+});
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stat = await Tour.aggregate([
