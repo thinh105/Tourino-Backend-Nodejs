@@ -12,7 +12,7 @@ process.on('uncaughtException', (err) => {
 
 const app = require('./app');
 
-const DB = process.env.DATABASE.replace(
+const dbConnectionString = process.env.DATABASE_CONNECTION_STRING.replace(
   '<password>',
   process.env.DATABASE_PASSWORD
 ).replace('<dbname>', process.env.DATABASE_NAME);
@@ -20,7 +20,7 @@ const DB = process.env.DATABASE.replace(
 // const DB = process.env.DATABASE_LOCAL;
 
 mongoose
-  .connect(DB, {
+  .connect(dbConnectionString, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,

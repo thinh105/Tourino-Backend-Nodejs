@@ -15,13 +15,13 @@ require('dotenv').config({
 
 // const DB = process.env.DATABASE_LOCAL;
 
-const DB = process.env.DATABASE.replace(
+const dbConnectionString = process.env.DATABASE_CONNECTION_STRING.replace(
   '<password>',
   process.env.DATABASE_PASSWORD
 ).replace('<dbname>', process.env.DATABASE_NAME);
 
 mongoose
-  .connect(DB, {
+  .connect(dbConnectionString, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
@@ -98,3 +98,5 @@ if (process.argv[2] === '-d') deleteData();
 // how to run ?
 // node dev-data/quickImportData -i
 // node dev-data/quickImportData -d
+// ----------------------------
+// remember to turn off bcrypt hash password because the password are hashed

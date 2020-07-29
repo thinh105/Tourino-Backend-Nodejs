@@ -5,12 +5,13 @@ class APIFeatures {
   }
 
   filter() {
-    const queryObj = { ...this.reqQuery }; // using destructuring to copy in ES6
+    const filterObj = { ...this.reqQuery }; // using destructuring to copy in ES6
 
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach((el) => delete queryObj[el]);
+    excludedFields.forEach((el) => delete filterObj[el]);
 
-    let queryStr = JSON.stringify(queryObj);
+    let queryStr = JSON.stringify(filterObj);
+
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     this.query = this.query.find(JSON.parse(queryStr));
@@ -34,7 +35,9 @@ class APIFeatures {
     if (this.reqQuery.fields) {
       const fields = this.reqQuery.fields.split(',').join(' ');
       this.query = this.query.select(fields);
-    } else this.query = this.query.select('-__v');
+    } else {
+      this.query = this.query.select('-__v');
+    }
 
     return this;
   }

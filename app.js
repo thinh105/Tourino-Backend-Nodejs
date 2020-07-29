@@ -30,12 +30,13 @@ const corsOptions = {
   },
 };
 // app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json()); // build-in middleware to get req.body ~ req.query
 app.use(express.static(path.join('__dirname', 'public'))); //  `${__dirname}/public`));
 
 // app.use((req, res, next) => {
-//   console.log(req.headers);
+//   console.log(req.headers, req.body);
 //   next();
 // });
 

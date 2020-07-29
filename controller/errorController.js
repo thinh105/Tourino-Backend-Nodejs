@@ -23,8 +23,9 @@ const handleValidationErrorDB = (err) => {
   return new AppError(message, 400);
 };
 
-const handleJWTError = () =>
-  new AppError('Invalid Token. Please log in again!!!', 401);
+const handleJWTError = () => {
+  return new AppError('Invalid Token. Please log in again!!!', 401);
+};
 
 const sendErrorDevelopment = (err, res) => {
   res.status(err.statusCode).json({

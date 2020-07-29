@@ -1,4 +1,3 @@
-// review / rating / createdAt / ref to tour/ ref to user
 const mongoose = require('mongoose');
 const idValidator = require('mongoose-id-validator');
 
@@ -36,6 +35,7 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+// QUERY MIDDLEWARE - auto pupulate user in review
 reviewSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'user',
@@ -43,6 +43,8 @@ reviewSchema.pre(/^find/, function (next) {
   });
   next();
 });
+
+// validate ID of user and tour
 reviewSchema.plugin(idValidator);
 
 reviewSchema.statics.calcAverageRatings = function (tourId) {

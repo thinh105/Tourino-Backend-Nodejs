@@ -1,3 +1,4 @@
+@users = http://127.0.0.1:6969/api/v1/users
 
 
 @baseUrl = http://127.0.0.1:6969/api/v1/tours
@@ -88,3 +89,8 @@ content-type: application/json
 ### Delete tour with valid ID ( but not exist ) - 404
 DELETE {{baseUrl}}/5d943906721ba4595616e999 HTTP/1.1
 					
+
+### Wrong Token
+
+GET {{users}}/me
+Authorization: Bearer 123456

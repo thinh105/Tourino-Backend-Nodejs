@@ -27,7 +27,7 @@ content-type: application/json
 
   {
     "name": "Bingo Doremon",
-    "email": "doremon@gmail.com",
+    "email": "doRemon123@gmail.com",
     "password":"doremonnobita",
     "passwordConfirm":"doremonnobita"
   }
@@ -44,7 +44,7 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "loulou@example.com",
+  "email": "thien@example.com",
   "password":"test1234"
 }
 
@@ -93,7 +93,7 @@ content-type: application/json
 
 ### Token tu Lanh
 #@tokentulanh = {{tulanh.response.body.token}}
-@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5MDM3NDU0MiwiZXhwIjoxNTkyOTY2NTQyfQ.FG7Yhouh6P7R6M-cBpnU8aZTVlcXPfHBY64R6geih2w
+@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NDk1NDM3NywiZXhwIjoxNTk3NTQ2Mzc3fQ.jEZt5BpybuYkcrirZ92ULofeJIRspJkENgk5IqelWU4
 
 
 
@@ -178,12 +178,12 @@ Authorization: Bearer {{token}}
 
 
 ### Get all users
-GET {{users}} HTTP/1.1
+GET {{users}}?page=3 HTTP/1.1
 Authorization: Bearer {{token}}
 
 
 ### Delete user
-DELETE {{users}}/5ec5155745f1f24d1f9d92b9 HTTP/1.1
+DELETE {{users}}/5f218b535d0f071a3a2681dc HTTP/1.1
 
 
 ### Abour Me

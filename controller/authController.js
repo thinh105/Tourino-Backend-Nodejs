@@ -6,24 +6,34 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 
-const signToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, {
+const createAndSendToken = (user, statusCode, res) => {
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-const createAndSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
-
   res.status(statusCode).json({
     status: 'success',
-    token,
+    data: {
+      user: user.toAuthJSON(),
+      token,
+    },
   });
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
   // to avoid someone want to take controll by set admin role in req.body
   const { name, email, password, passwordConfirm } = req.body;
-  const newUser = await User.create({ name, email, password, passwordConfirm });
+  let { photo } = req.body;
+
+  if (!photo) photo = `https://i.pravatar.cc/150?u=${email}`;
+
+  const newUser = await User.create({
+    name,
+    email,
+    password,
+    passwordConfirm,
+    photo,
+  });
 
   createAndSendToken(newUser, 201, res);
 });
@@ -47,11 +57,8 @@ exports.login = catchAsync(async (req, res, next) => {
   // if (!user || !(await user.comparePassword(password, user.password)))
   //   return next(new AppError('Incorect Email or Password!!!', 401));
 
-  console.log(user, user.password);
-
-  if (!user) return next(new AppError('Incorect Email!!!', 401));
-  if (!(await user.comparePassword(password, user.password)))
-    return next(new AppError('Incorect Password!!!', 401));
+  if (!user || !(await user.comparePassword(password, user.password)))
+    return next(new AppError('Incorect Email or Password!!!', 401));
 
   // 3 If everything is ok, send token to client
   createAndSendToken(user, 200, res);
@@ -143,7 +150,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false }); // turn off the validate because passwordConfirm is null right now
+    await user.save({ validateBeforeSave: false });
+    // turn off the validate because passwordConfirm is null right now
 
     return next(
       new AppError(

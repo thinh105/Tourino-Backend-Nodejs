@@ -7,31 +7,40 @@
 GET {{review}}
 
 #======================LOGIN======================#
-### Login and get data
-# @name acc1
+### Login tu lanh
+# @name tulanh
 POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "long123@gmail.com",
-  "password":"12345678905"
+  "email": "tulanh@natours.io",
+  "password": "test1234"
 }
-###
-@tokenAcc1 = {{acc1.response.body.token}}
 
-#======================ACTION AFTER AUTHENTICATION======================#
+### Login normal user
+# @name user1
+POST {{users}}/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "loulou@example.com",
+  "password": "test1234"
+}
+
+# ------------------------------------------------- #
 
 ### Set Token
-# @token = {{tokenAcc1}}
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5MDA0NTU1MywiZXhwIjoxNTkyNjM3NTUzfQ.UW9DnlKPVHYJn2ShMh7N9sZJrd8GPjfAx6Hs8tDvV48
+### Token tu Lanh
+#@tokentulanh = {{tulanh.response.body.token}}
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZGZhMmY4ZmI4MTRiNTZmYTE4MSIsImlhdCI6MTU5NDg3MTk3OSwiZXhwIjoxNTk3NDYzOTc5fQ.JhbgKjQ0XPpnpJ5bT3VikfQY81ALcQSWF_uFdIyeNYQ
 
-#--------------------------------------------------------------------------#
+#======================ACTION AFTER AUTHENTICATION======================#
 
 ### Get a review
 GET {{review}}/5c8a38da14eb5c17645c911c HTTP/1.1
 Authorization: Bearer {{token}}
 
-### Post a review
+### Post a review - error - Review must belong to a tour!!!
 POST {{review}} HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}

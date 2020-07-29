@@ -13,11 +13,11 @@ const tourSchema = new mongoose.Schema(
         'A tour name must have less than or equal to 80 characters',
       ],
       minlength: [
-        8,
-        'A tour name must have more then or equal to 8 characters',
+        10,
+        'A tour name must have more then or equal to 10 characters',
       ],
     },
-    slug: String,
+    slug: { type: String, lowercase: true, unique: true },
     duration: {
       type: Number,
       min: [1, 'Rating must be above 1.0'],
@@ -115,12 +115,15 @@ tourSchema.virtual('reviews', {
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre('save', function (next) {
-  // generate random String at the end of Slug
-  this.slug = `${slugify(this.name, {
+  const slugName = slugify(this.name, {
     lower: true,
     locale: 'vi',
     remove: /[*+~.()'"!:@]/g,
-  })}-${Math.random().toString(36).substring(8)}`;
+  });
+
+  const randomString = Math.random().toString(36).substring(8);
+
+  this.slug = `${slugName}-${randomString}`;
   next();
 });
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
+const { isEmail } = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
@@ -16,9 +17,15 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide an email!!!'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email!!!'],
+    validate: [isEmail, 'Please provide a valid email!!!'],
+    uniqueCaseInsensitive: true,
   },
-  photo: String,
+  photo: {
+    type: String,
+    default() {
+      return `https://i.pravatar.cc/150?u=${this.email}`;
+    },
+  },
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'tulanh'],
@@ -51,6 +58,10 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
+});
+
+userSchema.plugin(uniqueValidator, {
+  message: 'Error, {VALUE} is already taken.',
 });
 
 // ------------ ENCRYPTION PASSWORD ------------
@@ -88,6 +99,15 @@ userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
+
+userSchema.methods.toAuthJSON = function () {
+  return {
+    name: this.name,
+    email: this.email,
+    photo: this.photo,
+    role: this.role,
+  };
+};
 
 // ------------ an instance medthod to check password correct or not ------------
 userSchema.methods.comparePassword = async (

@@ -16,7 +16,7 @@ exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     // Allow Nested GET reviews on specific tour
     let filter = {};
-    if (req.params.tourId) filter = { tour: req.params.tourId };
+    if (req.params.slug) filter = { slug: req.params.slug };
 
     // EXECUTE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)
@@ -30,22 +30,27 @@ exports.getAll = (Model) =>
     res.status(200).json({
       status: 'success',
       result: document.length,
-      // data: { data: document },
       data: document,
     });
   });
 
+/**
+  * 
+  * @param {model} Model Mongoose Model 
+  * @param { Object } Option Specific options for Tour Controller
+  * {
+    findBySlug: boolean,
+    populate: { path: 'reviews' },
+    };
+  */
+
 exports.getOne = (Model, Option = {}) =>
   catchAsync(async (req, res, next) => {
-    // specific option for Tour Controller
-    // getTour = factory.getOne(Tour, {
-    // findBySlug: true,
-    // populate: { path: 'reviews' },
-    // });
-
     let query = Option.findBySlug
-      ? await Model.findOne({ slug: req.params.slug })
-      : await Model.findById(req.params.id);
+      ? Model.findOne({ slug: req.params.slug })
+      : Model.findById(req.params.id);
+
+    query = query.select('-__v -_id');
 
     if (Option.populate) query = query.populate(Option.populate);
 
@@ -56,7 +61,6 @@ exports.getOne = (Model, Option = {}) =>
     res.status(200).json({
       status: 'success',
       data: document,
-      // data: document,
     });
   });
 

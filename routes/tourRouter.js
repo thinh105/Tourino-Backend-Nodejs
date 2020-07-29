@@ -6,9 +6,6 @@ const reviewRouter = require('./reviewRouter');
 
 const router = express.Router();
 
-// Nested Routes with Express
-router.use('/:tourId/reviews', reviewRouter); // the same on app.js ~> routes
-
 router.route('/tour-stats').get(tourController.getTourStats);
 
 router
@@ -33,6 +30,9 @@ router
     authController.restrictTo('tulanh', 'lead-guide'),
     tourController.createTour
   );
+
+// Nested Routes with Express
+router.use('/:slug/reviews', reviewRouter); // the same on app.js ~> routes
 
 router
   .route('/:slug')

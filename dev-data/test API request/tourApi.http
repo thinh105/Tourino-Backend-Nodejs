@@ -22,7 +22,6 @@ content-type: application/json
 
 #-------------------------       CRUD FUNCTIONS       -------------------------#
 
-
 ### Get all tour
 GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
@@ -75,7 +74,7 @@ GET {{tours}}?duration[gt]=5&difficulty=easy  HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### filter query 1
-GET {{tours}}?price[lt]=1000   HTTP/1.1
+GET {{tours}}?price[gt]=1000   HTTP/1.1
 Authorization: Bearer {{token}}
 
 
