@@ -4,7 +4,6 @@ const factory = require('./handlerFactory');
 // ROUTE HANDLERS
 
 exports.setTourUserIds = (req, res, next) => {
-  console.log(req.body);
   // Allow nested routes
 
   if (!req.body.tour) req.body.tour = req.params.tourId;
