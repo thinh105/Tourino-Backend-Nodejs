@@ -71,18 +71,20 @@ Authorization: Bearer {{token}}
 
 ### filter query
 GET {{tours}}?duration[gt]=5&difficulty=easy  HTTP/1.1
-Authorization: Bearer {{token}}
+
 
 ### filter query 1
-GET {{tours}}?price[gt]=1000   HTTP/1.1
-Authorization: Bearer {{token}}
+GET {{tours}}?price[gt]=100&price[lt]=8000000  HTTP/1.1
+
+### filter query - range of price
+GET {{tours}}?price[gt]=100&price[lt]=8000000  HTTP/1.1
+
+### filter query -tag
+GET {{tours}}?tags=Bán Chạy&tags=Cao Cấp  HTTP/1.1
 
 
 ### filter query 2
 GET {{tours}}?price[lt]=1000&ratingsAverage[gte]=4.8   HTTP/1.1
-Authorization: Bearer {{token}}
-
-
 
 
 ### sort query					

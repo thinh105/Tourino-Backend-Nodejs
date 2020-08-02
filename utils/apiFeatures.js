@@ -5,17 +5,21 @@ class APIFeatures {
   }
 
   filter() {
-    const filterObj = { ...this.reqQuery }; // using destructuring to copy in ES6
+    const filterQueryObj = { ...this.reqQuery };
+
+    console.log(filterQueryObj);
 
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach((el) => delete filterObj[el]);
+    excludedFields.forEach((el) => delete filterQueryObj[el]); // remove fields for another features below
 
-    let queryStr = JSON.stringify(filterObj);
+    const filterQueryStr = JSON.stringify(filterQueryObj);
+    const mongoFilterQueryStr = filterQueryStr.replace(
+      /\b(gte|gt|lte|lt)\b/g,
+      (match) => `$${match}`
+    ); // add $ to match the mongo query
+    const mongoFilterQueryObj = JSON.parse(mongoFilterQueryStr);
 
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    this.query = this.query.find(JSON.parse(queryStr));
-    // let query = Tour.find();
+    this.query = this.query.find(mongoFilterQueryObj);
 
     return this;
   }
