@@ -8,18 +8,18 @@ exports.getUser = factory.getOne(User);
 exports.updateUser = factory.updateOne(User); // Do not update Password with this
 exports.deleteUser = factory.deleteOne(User);
 
-exports.getMe = (req, res, next) => {
-  req.params.id = req.user.id;
+exports.getMe = (request, response, next) => {
+  request.params.id = request.user.id;
   next();
 };
 
-exports.updateMe = catchAsync(async (req, res, next) => {
+exports.updateMe = catchAsync(async (request, response, next) => {
   const allowedFields = ['name', 'email'];
 
   // 1 Create error if user POSTs unwanted fields names that are not allowed to be updated
 
-  Object.keys(req.body).forEach((el) => {
-    if (!allowedFields.includes(el))
+  Object.keys(request.body).forEach((element) => {
+    if (!allowedFields.includes(element))
       return next(
         new AppError(
           `This route is used just for update ${allowedFields}!!! Please try again!!!`,
@@ -31,8 +31,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   // 2 Update User data
 
   const updatedUser = await User.findByIdAndUpdate(
-    req.user.id,
-    req.body, // filteredReqBody,
+    request.user.id,
+    request.body, // filteredReqBody,
     {
       new: true, //  true to return the modified document rather than the original.
       runValidators: true, //  runs update validators on this command.
@@ -40,7 +40,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     }
   );
 
-  res.status(200).json({
+  response.status(200).json({
     status: 'success',
     data: {
       user: updatedUser,
@@ -48,11 +48,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteMe = catchAsync(async (req, res, next) => {
-  await User.findByIdAndUpdate(req.user.id, { active: false });
+exports.deleteMe = catchAsync(async (request, response, next) => {
+  await User.findByIdAndUpdate(request.user.id, { active: false });
 
-  res.status(200).json({
+  response.status(200).json({
     status: 'success',
-    data: null,
   });
 });

@@ -13,23 +13,25 @@ const globalErrorHandler = require('./controller/errorController');
 const app = express();
 
 // 1 MIDDLEWARE
-
-const whitelist = [
+/*
+const whitelist = new Set([
   'http://localhost:8080',
   'http://localhost:8081',
   '::ffff:127.0.0.1',
-];
+]);
 
 const corsOptions = {
   origin(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (whitelist.has(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
 };
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
+*/
+
 app.use(cors());
 
 app.use(express.json()); // build-in middleware to get req.body ~ req.query
@@ -50,8 +52,8 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 
-app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+app.all('*', (request, response, next) => {
+  next(new AppError(`Can't find ${request.originalUrl} on this server!`, 404));
 });
 
 app.use(globalErrorHandler);

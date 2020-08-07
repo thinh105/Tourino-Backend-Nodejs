@@ -6,12 +6,12 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 
-const createAndSendToken = (user, statusCode, res) => {
+const createAndSendToken = (user, statusCode, response) => {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-  res.status(statusCode).json({
+  response.status(statusCode).json({
     status: 'success',
     data: {
       user: user.toAuthJSON(),
@@ -20,10 +20,10 @@ const createAndSendToken = (user, statusCode, res) => {
   });
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
+exports.signup = catchAsync(async (request, response, next) => {
   // to avoid someone want to take controll by set admin role in req.body
-  const { name, email, password, passwordConfirm } = req.body;
-  let { photo } = req.body;
+  const { name, email, password, passwordConfirm } = request.body;
+  let { photo } = request.body;
 
   if (!photo) photo = `https://i.pravatar.cc/150?u=${email}`;
 
@@ -35,11 +35,11 @@ exports.signup = catchAsync(async (req, res, next) => {
     photo,
   });
 
-  createAndSendToken(newUser, 201, res);
+  createAndSendToken(newUser, 201, response);
 });
 
-exports.login = catchAsync(async (req, res, next) => {
-  const { email, password } = req.body;
+exports.login = catchAsync(async (request, response, next) => {
+  const { email, password } = request.body;
 
   // 1 check if email and password exist
   if (!email || !password)
@@ -61,18 +61,18 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorect Email or Password!!!', 401));
 
   // 3 If everything is ok, send token to client
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, response);
 });
 
-exports.protect = catchAsync(async (req, res, next) => {
+exports.protect = catchAsync(async (request, response, next) => {
   // 1 Getting token and check of it's there
   let token;
 
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
+    request.headers.authorization &&
+    request.headers.authorization.startsWith('Bearer')
   ) {
-    token = req.headers.authorization.split(' ')[1];
+    token = request.headers.authorization.split(' ')[1];
   }
 
   if (!token)
@@ -101,14 +101,14 @@ exports.protect = catchAsync(async (req, res, next) => {
       )
     );
 
-  req.user = user; // tranfer data logged user to the next middleware function
+  request.user = user; // tranfer data logged user to the next middleware function
 
   next();
 });
 
 exports.restrictTo = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role))
+  return (request, response, next) => {
+    if (!roles.includes(request.user.role))
       return next(
         new AppError(
           'You do not have permission to perform this action!!!',
@@ -119,10 +119,10 @@ exports.restrictTo = (...roles) => {
   };
 };
 
-exports.forgotPassword = catchAsync(async (req, res, next) => {
+exports.forgotPassword = catchAsync(async (request, response, next) => {
   // 1 Get user based on POSTed email
 
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: request.body.email });
 
   if (!user)
     return next(new AppError('There is no user with email address!!!', 404));
@@ -134,7 +134,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send it to user's email
 
-  const resetURL = `${req.protocol}://${req.get(
+  const resetURL = `${request.protocol}://${request.get(
     'host'
   )}/api/v1/users/resetPassword/${resetToken}`;
 
@@ -147,7 +147,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       subject: 'Your password reset token (valid for 10 min)',
       message,
     });
-  } catch (err) {
+  } catch {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
@@ -161,16 +161,16 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     );
   }
 
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, response);
 });
 
-exports.resetPassword = catchAsync(async (req, res, next) => {
+exports.resetPassword = catchAsync(async (request, response, next) => {
   // 1 Get user based on the token
 
   // encrypt the plain token user provided
   const hashedToken = crypto
     .createHash('sha256')
-    .update(req.params.token)
+    .update(request.params.token)
     .digest('hex');
 
   // find the user on db
@@ -182,8 +182,8 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   if (!user) next(new AppError('Token is invalid or has expired', 400));
 
-  user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.password = request.body.password;
+  user.passwordConfirm = request.body.passwordConfirm;
   user.passwordResetToken = undefined; // reset
   user.passwordResetExpires = undefined; // reset
 
@@ -193,25 +193,25 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // do in userModel.js
 
   // 4 Log the user in, send JWT
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, response);
 });
 
-exports.updatePassword = catchAsync(async (req, res, next) => {
+exports.updatePassword = catchAsync(async (request, response, next) => {
   // 1 Get user from collection
 
-  const user = await User.findById(req.user.id).select('+password');
+  const user = await User.findById(request.user.id).select('+password');
 
   // 2 check if POSTed current password is correct
 
-  if (!(await user.comparePassword(req.body.oldPassword, user.password)))
+  if (!(await user.comparePassword(request.body.oldPassword, user.password)))
     return next(new AppError('Incorect Password!!!', 401));
 
   // 3 if ok, update password
-  user.password = req.body.newPassword;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.password = request.body.newPassword;
+  user.passwordConfirm = request.body.passwordConfirm;
 
   await user.save();
 
   // 4 log user in, send JWT
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, response);
 });

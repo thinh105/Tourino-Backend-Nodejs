@@ -1,22 +1,22 @@
 const AppError = require('../utils/appError');
 
-const handleCastErrorDB = (err) => {
-  const message = `Invalid ${err.path}: ${err.value}!!!`;
+const handleCastErrorDB = (error) => {
+  const message = `Invalid ${error.path}: ${error.value}!!!`;
   return new AppError(message, 400);
 };
 
-const handleDuplicateFieldsDB = (err) => {
+const handleDuplicateFieldsDB = (error) => {
   // errmsg: 'E11000 duplicate key error collection: natour.tours index: name_1 dup key: { : "Ha Nam Bay" }',
   // Use Regex to get the value in errmsg
 
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
+  const value = error.errmsg.match(/(["'])(\\?.)*?\1/)[0];
 
   const message = `Duplicate field value: ${value}. Please use another value!!!`;
   return new AppError(message, 400);
 };
 
-const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.errors).map((el) => el.message); // get a string of error messages
+const handleValidationErrorDB = (error) => {
+  const errors = Object.values(error.errors).map((element) => element.message); // get a string of error messages
 
   const message = `Invalid input: ${errors.join('. ')}`;
 
@@ -27,62 +27,62 @@ const handleJWTError = () => {
   return new AppError('Invalid Token. Please log in again!!!', 401);
 };
 
-const sendErrorDevelopment = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack,
+const sendErrorDevelopment = (error, response) => {
+  response.status(error.statusCode).json({
+    status: error.status,
+    error,
+    message: error.message,
+    stack: error.stack,
   });
 };
 
-const sendErrorProduction = (err, res) => {
+const sendErrorProduction = (error, response) => {
   // Operational, trusted error: send message to client
-  if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message,
+  if (error.isOperational) {
+    response.status(error.statusCode).json({
+      status: error.status,
+      message: error.message,
     });
 
     // Programming or other unknown error: don't leak error details
   } else {
     // 1) log error
     // eslint-disable-next-line no-console
-    console.error('UNKNOWN ERROR @#$%^', err);
+    console.error('UNKNOWN ERROR @#$%^', error);
 
     // 2) Send generic message to client
-    res.status(500).json({
+    response.status(500).json({
       status: 'error',
       message: 'Sorry, something went wrong!!!',
     });
   }
 };
 
-module.exports = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500; // default is 500 - internal server error
-  err.status = err.status || 'error';
+module.exports = (error, request, response, next) => {
+  error.statusCode = error.statusCode || 500; // default is 500 - internal server error
+  error.status = error.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorDevelopment(err, res);
+    sendErrorDevelopment(error, response);
   } else if (process.env.NODE_ENV === 'production') {
     // not a good practise to override the arguments of function.
     // create a hard copy
 
-    let error = { ...err };
+    let apiError = { ...error };
 
-    error =
-      error.name === 'CastError'
-        ? handleCastErrorDB(error)
-        : error.code === 11000
-        ? handleDuplicateFieldsDB(error)
-        : error.name === 'ValidationError'
-        ? handleValidationErrorDB(error)
-        : error.name === 'JsonWebTokenError'
+    apiError =
+      apiError.name === 'CastError'
+        ? handleCastErrorDB(apiError)
+        : apiError.code === 11000
+        ? handleDuplicateFieldsDB(apiError)
+        : apiError.name === 'ValidationError'
+        ? handleValidationErrorDB(apiError)
+        : apiError.name === 'JsonWebTokenError'
         ? handleJWTError()
-        : error.name === 'TokenExpiredError'
+        : apiError.name === 'TokenExpiredError'
         ? handleJWTError()
-        : error;
+        : apiError;
 
-    sendErrorProduction(error, res);
+    sendErrorProduction(apiError, response);
   }
 };

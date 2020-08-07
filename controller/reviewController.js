@@ -3,11 +3,11 @@ const factory = require('./handlerFactory');
 
 // ROUTE HANDLERS
 
-exports.setTourUserIds = (req, res, next) => {
+exports.setTourUserIds = (request, response, next) => {
   // Allow nested routes
 
-  if (!req.body.tour) req.body.tour = req.params.tourId;
-  if (!req.body.user) req.body.user = req.user.id;
+  if (!request.body.tour) request.body.tour = request.params.tourId;
+  if (!request.body.user) request.body.user = request.user.id;
   next();
 };
 

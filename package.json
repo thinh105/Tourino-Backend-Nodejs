@@ -14,13 +14,13 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "eslint-plugin-unicorn": "^21.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.27",
     "mongoose-id-validator": "^0.6.0",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
-    "ndb": "^1.1.5",
     "nodemailer": "^6.4.11",
     "slugify": "^1.4.5",
     "validator": "^12.2.0"
@@ -37,6 +37,6 @@
     "prettier": "^2.0.5"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=12.0.0"
   }
 }

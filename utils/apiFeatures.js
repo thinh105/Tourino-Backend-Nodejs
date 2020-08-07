@@ -1,32 +1,34 @@
 class APIFeatures {
-  constructor(query, reqQuery) {
+  constructor(query, requestQuery) {
     this.query = query;
-    this.reqQuery = reqQuery;
+    this.requestQuery = requestQuery;
   }
 
   filter() {
-    const filterQueryObj = { ...this.reqQuery };
+    const filterQueryObject = { ...this.requestQuery };
 
-    console.log(filterQueryObj);
-
+    // remove fields for another features below
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach((el) => delete filterQueryObj[el]); // remove fields for another features below
 
-    const filterQueryStr = JSON.stringify(filterQueryObj);
-    const mongoFilterQueryStr = filterQueryStr.replace(
+    excludedFields.forEach((element) => delete filterQueryObject[element]);
+
+    const filterQueryString = JSON.stringify(filterQueryObject);
+
+    const mongoFilterQueryString = filterQueryString.replace(
       /\b(gte|gt|lte|lt)\b/g,
       (match) => `$${match}`
     ); // add $ to match the mongo query
-    const mongoFilterQueryObj = JSON.parse(mongoFilterQueryStr);
 
-    this.query = this.query.find(mongoFilterQueryObj);
+    const mongoFilterQueryObject = JSON.parse(mongoFilterQueryString);
+
+    this.query = this.query.find(mongoFilterQueryObject);
 
     return this;
   }
 
   sort() {
-    if (this.reqQuery.sort) {
-      const sortBy = this.reqQuery.sort.split(',').join(' ');
+    if (this.requestQuery.sort) {
+      const sortBy = this.requestQuery.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy); // sort is the Mongoose method
     } else {
       this.query = this.query.sort('-ratingsAverage');
@@ -36,8 +38,8 @@ class APIFeatures {
   }
 
   selectFields() {
-    if (this.reqQuery.fields) {
-      const fields = this.reqQuery.fields.split(',').join(' ');
+    if (this.requestQuery.fields) {
+      const fields = this.requestQuery.fields.split(',').join(' ');
       this.query = this.query.select(fields);
     } else {
       this.query = this.query.select('-__v');
@@ -47,8 +49,8 @@ class APIFeatures {
   }
 
   paginate() {
-    const page = parseInt(this.reqQuery.page, 10) || 1;
-    const limit = parseInt(this.reqQuery.limit, 10) || 10;
+    const page = Number.parseInt(this.requestQuery.page, 10) || 1;
+    const limit = Number.parseInt(this.requestQuery.limit, 10) || 10;
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);

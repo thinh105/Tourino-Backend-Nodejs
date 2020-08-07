@@ -3,23 +3,23 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
 exports.createOne = (Model) =>
-  catchAsync(async (req, res, next) => {
-    const doc = await Model.create(req.body);
+  catchAsync(async (request, response, next) => {
+    const document = await Model.create(request.body);
 
-    res.status(201).json({
+    response.status(201).json({
       status: 'success',
-      data: doc,
+      data: document,
     });
   });
 
 exports.getAll = (Model) =>
-  catchAsync(async (req, res, next) => {
+  catchAsync(async (request, response, next) => {
     // Allow Nested GET reviews on specific tour
-    let filter = {};
-    if (req.params.slug) filter = { slug: req.params.slug };
+    let filterModel = {};
+    if (request.params.slug) filterModel = { slug: request.params.slug };
 
     // EXECUTE QUERY
-    const features = new APIFeatures(Model.find(filter), req.query)
+    const features = new APIFeatures(Model.find(filterModel), request.query)
       .filter()
       .sort()
       .selectFields()
@@ -27,7 +27,7 @@ exports.getAll = (Model) =>
     const document = await features.query; // .explain() for statistics;
 
     // SEND RESPONSE
-    res.status(200).json({
+    response.status(200).json({
       status: 'success',
       result: document.length,
       data: document,
@@ -45,10 +45,10 @@ exports.getAll = (Model) =>
   */
 
 exports.getOne = (Model, Option = {}) =>
-  catchAsync(async (req, res, next) => {
+  catchAsync(async (request, response, next) => {
     let query = Option.findBySlug
-      ? Model.findOne({ slug: req.params.slug })
-      : Model.findById(req.params.id);
+      ? Model.findOne({ slug: request.params.slug })
+      : Model.findById(request.params.id);
 
     query = query.select('-__v -_id');
 
@@ -58,51 +58,54 @@ exports.getOne = (Model, Option = {}) =>
 
     if (!document) return next(new AppError('No document found!!!', 404));
 
-    res.status(200).json({
+    response.status(200).json({
       status: 'success',
       data: document,
     });
   });
 
 exports.updateOne = (Model, Option = {}) =>
-  catchAsync(async (req, res, next) => {
+  catchAsync(async (request, response, next) => {
     let document;
 
     if (Option.findBySlug) {
       document = await Model.findOneAndUpdate(
-        { slug: req.params.slug },
-        req.body,
+        { slug: request.params.slug },
+        request.body,
         {
           new: true, // return the new Update document to client
           runValidators: true, // run the validator
         }
       );
     } else {
-      document = await Model.findByIdAndUpdate(req.params.id, req.body, {
-        new: true, // return the new Update document to client
-        runValidators: true, // run the validator
-      });
+      document = await Model.findByIdAndUpdate(
+        request.params.id,
+        request.body,
+        {
+          new: true, // return the new Update document to client
+          runValidators: true, // run the validator
+        }
+      );
     }
 
     if (!document) return next(new AppError('No document found!!!', 404));
 
-    res.status(200).json({
+    response.status(200).json({
       status: 'success',
       data: document,
     });
   });
 
 exports.deleteOne = (Model, Option = {}) =>
-  catchAsync(async (req, res, next) => {
+  catchAsync(async (request, response, next) => {
     const document = Option.findBySlug
-      ? await Model.findOneAndDelete({ slug: req.params.slug })
-      : await Model.findByIdAndDelete(req.params.id);
+      ? await Model.findOneAndDelete({ slug: request.params.slug })
+      : await Model.findByIdAndDelete(request.params.id);
 
     if (!document) return next(new AppError('No document found!!!', 404));
 
     // in RESTful API, common practice is not send anything back to client when deleted
-    res.status(204).json({
+    response.status(204).json({
       status: 'success',
-      data: null,
     });
   });

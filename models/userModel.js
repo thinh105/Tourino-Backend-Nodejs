@@ -44,8 +44,8 @@ const userSchema = new mongoose.Schema({
       // this only works on CREATE and SAVE not Update!!!!
       // whenever we want to update a user
       // we will always have to use SAVE not FindOneAndUpdate
-      validator(el) {
-        return el === this.password;
+      validator(element) {
+        return element === this.password;
       },
       message: 'Passwords are not the same!!!',
     },
@@ -121,7 +121,7 @@ userSchema.methods.comparePassword = async (
 // ------------ an instance method to check Password changed after Token issued or not ------------
 userSchema.methods.changedPasswordAfterToken = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
-    const changedTimestamp = parseInt(
+    const changedTimestamp = Number.parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10
     );

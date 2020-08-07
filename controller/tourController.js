@@ -18,7 +18,7 @@ exports.deleteTour = factory.deleteOne(Tour, {
   findBySlug: true,
 });
 
-exports.getTourStats = catchAsync(async (req, res, next) => {
+exports.getTourStats = catchAsync(async (request, response, next) => {
   const stat = await Tour.aggregate([
     {
       $match: { ratingsAverage: { $gte: 4 } },
@@ -43,15 +43,15 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     //   $match: { _id: { $ne: 'easy'}}
     // }
   ]);
-  res.status(200).json({
+  response.status(200).json({
     status: 'success',
     result: stat.length,
     data: { stat },
   });
 });
 
-exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
-  const { year } = req.params;
+exports.getMonthlyPlan = catchAsync(async (request, response, next) => {
+  const { year } = request.params;
   const monthlyPlan = await Tour.aggregate([
     {
       $unwind: '$startDates',
@@ -93,16 +93,16 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
   ]);
 
-  res.status(200).json({
+  response.status(200).json({
     status: 'success',
     result: monthlyPlan.length,
     data: { monthlyPlan },
   });
 });
 
-exports.aliasTopFiveTours = (req, res, next) => {
-  req.query.limit = '5';
-  req.query.sort = '-ratingsAverage,price';
-  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+exports.aliasTopFiveTours = (request, response, next) => {
+  request.query.limit = '5';
+  request.query.sort = '-ratingsAverage,price';
+  request.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
 };

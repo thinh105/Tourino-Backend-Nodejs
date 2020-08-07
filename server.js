@@ -4,15 +4,15 @@ const mongoose = require('mongoose');
 require('dotenv').config({ path: './config.env' });
 // connect environment variable config.env file
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', (error) => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-  console.log(err.message);
+  console.log(error.message);
   process.exit(1);
 });
 
 const app = require('./app');
 
-const dbConnectionString = process.env.DATABASE_CONNECTION_STRING.replace(
+const databaseConnectionString = process.env.DATABASE_CONNECTION_STRING.replace(
   '<password>',
   process.env.DATABASE_PASSWORD
 ).replace('<dbname>', process.env.DATABASE_NAME);
@@ -20,14 +20,14 @@ const dbConnectionString = process.env.DATABASE_CONNECTION_STRING.replace(
 // const DB = process.env.DATABASE_LOCAL;
 
 mongoose
-  .connect(dbConnectionString, {
+  .connect(databaseConnectionString, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true,
   })
   .then(() => console.log('DB connection succesful!'))
-  .catch((err) => console.log(err));
+  .catch((error) => console.log(error));
 
 const port = process.env.PORT || 6969;
 
@@ -37,8 +37,8 @@ const server = app.listen(port, () => {
 
 // Unhandled promise rejections
 
-process.on('unhandledRejection', (err) => {
-  console.log(err);
+process.on('unhandledRejection', (error) => {
+  console.log(error);
 
   console.log('Unhandled promise rejections!!! Shutting down...');
 

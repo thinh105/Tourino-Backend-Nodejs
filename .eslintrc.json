@@ -4,9 +4,10 @@
     "plugin:prettier/recommended",
     "plugin:node/recommended",
     "eslint:recommended",
-    // "plugin:jest/recommended",
     "plugin:promise/recommended",
-    "plugin:security/recommended"
+    "plugin:security/recommended",
+    "plugin:unicorn/recommended"
+    // "plugin:jest/recommended",
   ],
   "plugins": ["prettier", "security"],
   "rules": {
@@ -14,10 +15,43 @@
 
     // "no-return-await": 0,
     // "class-methods-use-this": 0,
+
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ForInStatement",
+        "message": "for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries }, and iterate over the resulting array."
+      },
+      {
+        "selector": "LabeledStatement",
+        "message": "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
+      },
+      {
+        "selector": "WithStatement",
+        "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
+      }
+    ],
+
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "camelCase"
+      }
+    ],
     "no-nested-ternary": 0,
     "no-param-reassign": [
       2,
-      { "props": true, "ignorePropertyModificationsFor": ["err", "req", "res"] }
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "err",
+          "error",
+          "req",
+          "res",
+          "request",
+          "response"
+        ]
+      }
     ],
     "func-names": 0,
     "no-process-exit": 0,
@@ -32,7 +66,8 @@
       }
     ],
     "no-unused-vars": [2, { "argsIgnorePattern": "req|res|next|val" }],
-    "node/no-path-concat": 2
+    "node/no-path-concat": 2,
+    "unicorn/no-fn-reference-in-iterator": 0
   },
   "env": {
     // "jest/globals": true
