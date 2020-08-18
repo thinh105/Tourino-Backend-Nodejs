@@ -7,7 +7,7 @@ module.exports = function (query) {
     // add $ to match the mongo query
     const filterString = JSON.stringify(filter);
     const mongoFilterQuery = filterString.replace(
-      /\b(gte|gt|lte|lt)\b/g,
+      /\b(gte|gt|lte|lt|all|in)\b/g,
       (match) => `$${match}`
     );
 
@@ -21,6 +21,8 @@ module.exports = function (query) {
   mongoQuery.page = Number.parseInt(page, 10) || 1;
   mongoQuery.limit = Number.parseInt(limit, 10) || 10;
   mongoQuery.skip = (mongoQuery.page - 1) * mongoQuery.limit;
+
+  console.log(mongoQuery);
 
   return mongoQuery;
 };
