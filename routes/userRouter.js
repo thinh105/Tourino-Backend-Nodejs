@@ -19,9 +19,9 @@ router.patch('/updateMe', userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 
 // ------ Most Secure router -------
-// only tulanh can use the route below
+// only trn-admin can use the route below
 
-router.use(authController.restrictTo('tulanh'));
+router.use(authController.restrictTo('trn-admin'));
 
 router.route('/').get(userController.getAllUsers);
 

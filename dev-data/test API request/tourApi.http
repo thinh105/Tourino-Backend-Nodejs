@@ -4,21 +4,21 @@
 #-------------------------        LOGIN       -------------------------#
 
 ### Login tu lanh
-# @name tulanh
+# @name trn-admin
 POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "tulanh@natours.io",
+  "email": "trn-admin@natours.io",
   "password": "test1234"
 }
 
 ### Token tu Lanh
-#@tokentulanh = {{tulanh.response.body.token}}
-@tokentulanh = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5Mzk2NDkwMiwiZXhwIjoxNTk2NTU2OTAyfQ.uDJ24-yFz_HLK_HmX4pYzmIItlHRDbH1KH_9CqyPGrM
+#@tokentrn-admin = {{trn-admin.response.body.token}}
+@tokentrn-admin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5Mzk2NDkwMiwiZXhwIjoxNTk2NTU2OTAyfQ.uDJ24-yFz_HLK_HmX4pYzmIItlHRDbH1KH_9CqyPGrM
 
 ### Set Token
-@token = {{tokentulanh}}
+@token = {{tokentrn-admin}}
 
 #-------------------------       CRUD FUNCTIONS       -------------------------#
 
@@ -70,11 +70,11 @@ Authorization: Bearer {{token}}
 #-------------------------       ADVANCED QUERY       -------------------------#
 
 ### filter query
-GET {{tours}}?duration[gt]=5&difficulty=easy  HTTP/1.1
+GET {{tours}}?destinations=Sapa  HTTP/1.1
 
 
 ### filter query 1
-GET {{tours}}?price[gt]=100&price[lt]=8000000  HTTP/1.1
+GET {{tours}}?price[gt]=100&price[lt]=8000  HTTP/1.1
 
 ### filter query - range of price
 GET {{tours}}?price[gt]=100&price[lt]=8000000  HTTP/1.1
@@ -92,8 +92,12 @@ GET {{tours}}?sort=-price HTTP/1.1
 
 ### select fields
 GET {{tours}}
-?fields=name,duration,difficulty,price
+?fields=name,duration,summary,price
 #,-_id
+
+### mutiple query
+GET {{tours}}
+?fields=name,duration,summary,price&sort=-price
 
 ### Pagination
 GET {{tours}}?limit=6&page=1 HTTP/1.1

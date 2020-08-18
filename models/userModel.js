@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'guide', 'lead-guide', 'tulanh'],
+    enum: ['user', 'guide', 'lead-guide', 'trn-admin'],
     default: 'user',
   },
   password: {
@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(uniqueValidator, {
-  message: 'Error, {VALUE} is already taken.',
+  message: '💥 Error, {VALUE} is already taken!!! 💥',
 });
 
 // ------------ ENCRYPTION PASSWORD ------------
@@ -70,7 +70,7 @@ userSchema.plugin(uniqueValidator, {
 // and the moment where it's actually persisted to the database
 // Need to be turn off when import old database
 
-userSchema.pre('save', async function (next) {
+/* userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();
 
@@ -80,7 +80,7 @@ userSchema.pre('save', async function (next) {
   // delete passwordConfirm field
   this.passwordConfirm = undefined;
   next();
-});
+}); */
 
 //  ---------- Update changedPasswordAt property for the user ------------
 userSchema.pre('save', function (next) {

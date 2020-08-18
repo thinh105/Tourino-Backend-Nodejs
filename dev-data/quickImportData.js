@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
 /* eslint-disable unicorn/no-process-exit */
 /* eslint-disable no-console */
 
@@ -34,56 +33,66 @@ mongoose
   .then(() => console.log('DB connection succesful!'))
   .catch((error) => console.log(error));
 
-// IMPORT DATA INTO DB
 const importData = async () => {
-  // READ JSON FILE
-  const tourPath = path.join(__dirname, 'data', 'final.json');
-  const tours = JSON.parse(await fs.readFile(tourPath, 'utf8'));
-  /*   const reviews = JSON.parse(
-    fs.readFileSync(path.join(__dirname, 'data', 'reviews.json'), 'utf8')
+  const tours = JSON.parse(
+    await fs.readFile(path.join(__dirname, 'data', 'final.json'), 'utf8')
   );
+
   const users = JSON.parse(
-    fs.readFileSync(path.join(__dirname, 'data', 'users.json'), 'utf8')
-  ); */
+    await fs.readFile(path.join(__dirname, 'data', 'users.json'), 'utf8')
+  );
 
   const errorTours = [];
 
   const TourPromises = tours.map((tour) =>
-    Tour.create(tour).catch((error) => errorTours.push({ tour, e: error }))
+    Tour.create(tour).catch((error) => errorTours.push({ tour, error }))
   );
-  await Promise.all(TourPromises);
 
-  await fs.writeFile('errorTour.json', JSON.stringify(errorTours));
+  const UserPromises = await User.insertMany(users, { lean: true }).catch(
+    console.log
+  );
+
+  await Promise.all([...TourPromises, UserPromises]);
+
+  await fs.writeFile(
+    'dev-data/data/errorTourReport.json',
+    JSON.stringify(errorTours)
+  );
+
+  // await fs.writeFile(
+  //   'dev-data/data/errorUserReport.json',
+  //   JSON.stringify(errorUsers)
+  // );
+
+  // await Promise.all([tourReportPromise, userReportPromise]);
 
   console.log('finished!!! :tada:');
-
+  process.exit();
   // ---------------------------
   // await Tour.insertMany(tours);
   // await User.insertMany(users);
   // await Review.insertMany(reviews);
-
   // await Tour.insertMany(tours, { lean: true });
-
+  //
   // have to use create to run the Document middleware (make slug) on Tour Model
   // Document middleware not support insertMany
-
+  //
   // lean: skips hydrating and validating the documents.
+  //
   /*     await User.insertMany(users, { lean: true });
     await Review.insertMany(reviews, {
       lean: true,
     });
     */
+  // try {
+  //   // await Tour.create(tours);
+  //   await User.create(users, { validateBeforeSave: false });
+  //   // await Review.create(reviews);
 
-  /*   try {
-    await Tour.create(tours);
-    // await User.create(users, { validateBeforeSave: false });
-    // await Review.create(reviews);
-
-    console.log('Data successfully loaded');
-  } catch (err) {
-    console.log(err);
-  } */
-  process.exit();
+  //   console.log('Data successfully loaded');
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
 
 // DELETE ALL DATA FROM DB

@@ -67,7 +67,8 @@
     ],
     "no-unused-vars": [2, { "argsIgnorePattern": "req|res|next|val" }],
     "node/no-path-concat": 2,
-    "unicorn/no-fn-reference-in-iterator": 0
+    "unicorn/no-fn-reference-in-iterator": 0,
+    "security/detect-non-literal-fs-filename": 0
   },
   "env": {
     // "jest/globals": true

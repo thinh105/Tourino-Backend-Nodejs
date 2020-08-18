@@ -1,9 +1,9 @@
 [
   {
     "_id": "5c8a1d5b0190b214360dc057",
-    "name": "Jonas Schmedtmann",
+    "name": "Bastian Nguyen",
     "email": "tulanh@natours.io",
-    "role": "tulanh",
+    "role": "trn-admin",
     "active": true,
     "password": "$2a$12$Q0grHjH9PXc6SxivC8m12.2mZJ9BbKcgFpwSG4Y1ZEII8HJVzWeyS"
   },

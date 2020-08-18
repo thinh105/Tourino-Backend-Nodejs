@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const APIFeatures = require('../utils/apiFeatures');
+// const ApiFeatures = require('../utils/apiFeatures');
+const queryToMongo = require('../utils/queryToMongo');
 
 exports.createOne = (Model) =>
   catchAsync(async (request, response, next) => {
@@ -15,28 +16,27 @@ exports.createOne = (Model) =>
 exports.getAll = (Model) =>
   catchAsync(async (request, response, next) => {
     // Allow Nested GET reviews on specific tour
-    let filterModel = {};
-    if (request.params.slug) filterModel = { slug: request.params.slug };
+    request.query.slug = request.params.slug || undefined;
 
-    // EXECUTE QUERY
-    const features = new APIFeatures(Model.find(filterModel), request.query)
-      .filter()
-      .sort()
-      .selectFields()
-      .paginate();
-    const document = await features.query; // .explain() for statistics;
+    const { skip, limit, sort, fields, filter } = queryToMongo(request.query);
+
+    const [resultTotal, data] = await Promise.all([
+      Model.countDocuments(filter),
+      Model.find(filter).sort(sort).select(fields).skip(skip).limit(limit),
+    ]);
 
     // SEND RESPONSE
     response.status(200).json({
       status: 'success',
-      result: document.length,
-      data: document,
+      resultTotal,
+      resultReturned: data.length,
+      data,
     });
   });
 
 /**
   * 
-  * @param {model} Model Mongoose Model 
+  * @param { model } Model Mongoose Model 
   * @param { Object } Option Specific options for Tour Controller
   * {
     findBySlug: boolean,
