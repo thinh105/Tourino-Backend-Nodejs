@@ -9,13 +9,13 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "trn-admin@natours.io",
+  "email": "admin@tourino.com",
   "password": "test1234"
 }
 
 ### Token tu Lanh
 #@tokentrn-admin = {{trn-admin.response.body.token}}
-@tokentrn-admin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5Mzk2NDkwMiwiZXhwIjoxNTk2NTU2OTAyfQ.uDJ24-yFz_HLK_HmX4pYzmIItlHRDbH1KH_9CqyPGrM
+@tokentrn-admin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NzgxNjc3NSwiZXhwIjoxNjAwNDA4Nzc1fQ.JhjEEksYtXqFXCvVvtzt0ZKjF6RgqguJQjHz1FQ3fPQ
 
 ### Set Token
 @token = {{tokentrn-admin}}
@@ -27,7 +27,7 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/da-nang-ba-na-ngu-hanh-son-hoi-an-son-tra-g5wv HTTP/1.1
+GET {{tours}}/south-to-north-vietnam-10-days-9bkljl HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a tour
@@ -63,7 +63,7 @@ Authorization: Bearer {{token}}
 
 
 ### Delete tour
-DELETE {{tours}}/da HTTP/1.1
+DELETE {{tours}}/ HTTP/1.1
 Authorization: Bearer {{token}}
 
 
@@ -75,8 +75,8 @@ GET {{tours}}?price[gt]=100&price[lt]=8000  HTTP/1.1
 ### filter query - range of price
 GET {{tours}}?price[gt]=100&price[lt]=8000000  HTTP/1.1
 
-### filter query -tag
-GET {{tours}}?tags=Bán Chạy&tags=Cao Cấp  HTTP/1.1
+### filter query -travelStyle
+GET {{tours}}?travelStyle[all]=Adventure&travelStyle[all]=Mountain Hikes  HTTP/1.1
 
 
 ### filter query 2
@@ -96,7 +96,7 @@ GET {{tours}}
 ?fields=name,duration,summary,price&sort=-price
 
 ### Pagination
-GET {{tours}}?limit=6&page=1 HTTP/1.1
+GET {{tours}}?limit=20&page=2 HTTP/1.1
 
 ### filter query OR
 GET {{tours}}?destinations[in]=Sapa&destinations[in]=Hanoi  HTTP/1.1
@@ -105,20 +105,33 @@ GET {{tours}}?destinations[in]=Sapa&destinations[in]=Hanoi  HTTP/1.1
 GET {{tours}}?destinations[all]=Sapa&destinations[all]=Hanoi  HTTP/1.1
 
 
-#-------------------------              -------------------------#
+#-------------------------    Aggregate query          -------------------------#
 
 ### Wrong URL
 GET http://127.0.0.1:6969/api/v10/tours
 
 ### Get monthly plan on year 2021
-GET {{tours}}/monthly-plan/:2021 HTTP/1.1
+GET {{tours}}/monthly-plan/:2020 HTTP/1.1
+Authorization: Bearer {{token}}
+
 
 ### Alias top 5 tours
 GET {{tours}}/top-five-tours HTTP/1.1
 
-### Get tour stats
-GET {{tours}}/tour-stats HTTP/1.1
+### Get tour statistics
+GET {{tours}}/tour-statistics HTTP/1.1
 
+### Get tour destinations
+GET {{tours}}/destinations HTTP/1.1
+
+### Get tour Travel Style
+GET {{tours}}/travelStyle HTTP/1.1
+
+
+
+### Get User Role
+GET {{users}}/role HTTP/1.1
+Authorization: Bearer {{token}}
 
 
 

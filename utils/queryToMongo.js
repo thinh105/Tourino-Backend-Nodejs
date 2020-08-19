@@ -1,4 +1,4 @@
-module.exports = function (query) {
+module.exports = (query) => {
   const { page, limit, sort, fields, ...filter } = query;
 
   const mongoQuery = {};
@@ -16,13 +16,13 @@ module.exports = function (query) {
 
   mongoQuery.sort = sort ? sort.split(',').join(' ') : {};
 
-  if (fields) mongoQuery.fields = fields.split(',').join(' ');
+  mongoQuery.fields = fields
+    ? fields.split(',').join(' ')
+    : '-images -timeline -__v';
 
   mongoQuery.page = Number.parseInt(page, 10) || 1;
   mongoQuery.limit = Number.parseInt(limit, 10) || 10;
   mongoQuery.skip = (mongoQuery.page - 1) * mongoQuery.limit;
-
-  console.log(mongoQuery);
 
   return mongoQuery;
 };

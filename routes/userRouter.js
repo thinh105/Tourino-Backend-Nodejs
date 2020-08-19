@@ -23,6 +23,8 @@ router.delete('/deleteMe', userController.deleteMe);
 
 router.use(authController.restrictTo('trn-admin'));
 
+router.route('/role').get(userController.getRoleAndCount);
+
 router.route('/').get(userController.getAllUsers);
 
 router

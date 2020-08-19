@@ -1,5 +1,5 @@
 const Review = require('../models/reviewModel');
-const factory = require('./handlerFactory');
+const handler = require('../utils/handlerFactory');
 
 // ROUTE HANDLERS
 
@@ -11,8 +11,8 @@ exports.setTourUserIds = (request, response, next) => {
   next();
 };
 
-exports.getAllReviews = factory.getAll(Review);
-exports.getReview = factory.getOne(Review);
-exports.createReview = factory.createOne(Review);
-exports.deleteReview = factory.deleteOne(Review);
-exports.updateReview = factory.updateOne(Review);
+exports.getAllReviews = handler.getAll(Review);
+exports.getReview = handler.getOne(Review);
+exports.createReview = handler.createOne(Review);
+exports.deleteReview = handler.deleteOne(Review);
+exports.updateReview = handler.updateOne(Review);

@@ -1,17 +1,19 @@
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const factory = require('./handlerFactory');
+const handler = require('../utils/handlerFactory');
 
-exports.getAllUsers = factory.getAll(User);
-exports.getUser = factory.getOne(User);
-exports.updateUser = factory.updateOne(User); // Do not update Password with this
-exports.deleteUser = factory.deleteOne(User);
+exports.getAllUsers = handler.getAll(User);
+exports.getUser = handler.getOne(User);
+exports.updateUser = handler.updateOne(User); // Do not update Password with this
+exports.deleteUser = handler.deleteOne(User);
 
 exports.getMe = (request, response, next) => {
   request.params.id = request.user.id;
   next();
 };
+
+exports.getRoleAndCount = handler.getDistinctValueAndCount(User, 'role');
 
 exports.updateMe = catchAsync(async (request, response, next) => {
   const allowedFields = ['name', 'email'];

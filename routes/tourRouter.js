@@ -6,7 +6,7 @@ const reviewRouter = require('./reviewRouter');
 
 const router = express.Router();
 
-router.route('/tour-stats').get(tourController.getTourStats);
+router.route('/tour-statistics').get(tourController.getTourStatistics);
 
 router
   .route('/monthly-plan/:year')
@@ -20,6 +20,9 @@ router
   .route('/top-five-tours')
   // to avoid conflix with route('/:id'), place this router above router /:id
   .get(tourController.aliasTopFiveTours, tourController.getAllTours);
+
+router.route('/destinations').get(tourController.getDestinationsAndCount);
+router.route('/travelStyle').get(tourController.getTravelStyleAndCount);
 
 router
   .route('/')
