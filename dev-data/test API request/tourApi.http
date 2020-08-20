@@ -69,8 +69,8 @@ Authorization: Bearer {{token}}
 
 #-------------------------       ADVANCED QUERY       -------------------------#
 
-### filter query 1
 GET {{tours}}?price[gt]=100&price[lt]=8000  HTTP/1.1
+### filter query 1
 
 ### filter query - range of price
 GET {{tours}}?price[gt]=100&price[lt]=8000000  HTTP/1.1
