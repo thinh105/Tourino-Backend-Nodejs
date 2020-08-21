@@ -112,7 +112,7 @@ exports.getDistinctValueAndCount = (Model, value) =>
       },
       {
         $project: {
-          [value]: '$_id',
+          value: '$_id',
           _id: 0,
           count: 1,
         },
