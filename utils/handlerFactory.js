@@ -15,7 +15,7 @@ exports.createOne = (Model) =>
 exports.getAll = (Model) =>
   catchAsync(async (request, response, next) => {
     // Allow Nested GET reviews on specific tour
-    request.query.slug = request.params.slug || undefined;
+    if (request.params.slug) request.query.slug = request.params.slug;
 
     const { skip, limit, sort, fields, filter } = queryToMongo(request.query);
 

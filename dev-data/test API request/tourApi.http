@@ -68,7 +68,7 @@ Authorization: Bearer {{token}}
 
 
 #-------------------------       ADVANCED QUERY       -------------------------#
-
+###
 GET {{tours}}?price[gt]=100&price[lt]=8000  HTTP/1.1
 ### filter query 1
 
@@ -103,6 +103,9 @@ GET {{tours}}?destinations[in]=Sapa&destinations[in]=Hanoi  HTTP/1.1
 
 ### filter query ALl
 GET {{tours}}?destinations[all]=Sapa&destinations[all]=Hanoi  HTTP/1.1
+
+### filter query All - 1 city
+GET {{tours}}?destinations=Hue,Halong Bay  HTTP/1.1
 
 
 #-------------------------    Aggregate query          -------------------------#

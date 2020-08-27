@@ -1,6 +1,5 @@
 module.exports = (query) => {
   const { page, limit, sort, fields, ...filter } = query;
-
   const mongoQuery = {};
 
   if (filter) {
