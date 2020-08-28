@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "prod": "NODE_ENV=production nodemon server.js",
-    "debug": "node --inspect ./server.js"
+    "debug": "node --inspect ./server.js",
+    "build": "NODE_ENV=production node server.js"
   },
   "author": "",
   "license": "ISC",
