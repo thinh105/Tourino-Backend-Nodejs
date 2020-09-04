@@ -4,6 +4,11 @@ const path = require('path');
 const morgan = require('morgan');
 const cors = require('cors');
 const qs = require('qs');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
 
 const tourRouter = require('./routes/tourRouter');
 const userRouter = require('./routes/userRouter');
@@ -14,7 +19,7 @@ const globalErrorHandler = require('./controller/errorController');
 
 const app = express();
 
-// 1 MIDDLEWARE
+// 1 GLOBAL MIDDLEWARE
 /*
 const whitelist = new Set([
   'http://localhost:8080',
@@ -34,10 +39,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 */
 
-// allow the query using comma for array :
+// Allow the query using comma for array :
 // destinations[all]=Hue,Halong%20Bay = destinations: { all: [ 'Hue', 'Halong Bay' ] },
 // in express 4. , app.set must above app.use
 // https://github.com/expressjs/express/issues/3039
+
 app.set('query parser', function (string) {
   return qs.parse(string, {
     comma: true,
@@ -45,11 +51,35 @@ app.set('query parser', function (string) {
   });
 });
 
+// Set security HTTP headers
+app.use(helmet());
 app.use(cors());
 
-app.use(express.json()); // build-in middleware to get req.body ~ req.query
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again later!',
+});
+
+app.use('/api/', limiter);
+
+// build-in middleware to get req.body ~ req.query from body
+app.use(express.json({ limit: '10kb' }));
+
+// Data Sanitization against:
+app.use(mongoSanitize()); // NoSQL query injection
+app.use(xss()); // XSS
+app.use(
+  hpp({
+    whitelist: ['duration'],
+  })
+); // parameter pollution
+
+// Serving static files
 app.use(express.static(path.join('__dirname', 'public'))); //  `${__dirname}/public`));
 
+// Test some custom middleware
 // app.use((req, res, next) => {
 //   console.log(req.headers, req.body);
 //   next();
