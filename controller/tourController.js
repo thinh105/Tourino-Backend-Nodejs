@@ -5,16 +5,12 @@ const handler = require('../utils/handlerFactory');
 
 exports.getAllTours = handler.getAll(Tour);
 exports.getTour = handler.getOne(Tour, {
-  findBySlug: true,
   // populate: { path: 'reviews' },
 });
+
 exports.createTour = handler.createOne(Tour);
-exports.updateTour = handler.updateOne(Tour, {
-  findBySlug: true,
-});
-exports.deleteTour = handler.deleteOne(Tour, {
-  findBySlug: true,
-});
+exports.updateTour = handler.updateOne(Tour);
+exports.deleteTour = handler.deleteOne(Tour);
 
 exports.getTourStatistics = handler.getTourStatistics(Tour);
 

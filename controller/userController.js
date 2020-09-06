@@ -16,7 +16,7 @@ exports.getMe = (request, response, next) => {
 exports.getRoleAndCount = handler.getDistinctValueAndCount(User, 'role');
 
 exports.updateMe = catchAsync(async (request, response, next) => {
-  const allowedFields = ['name', 'email'];
+  const allowedFields = ['name', 'email', 'photo'];
 
   // 1 Create error if user POSTs unwanted fields names that are not allowed to be updated
 

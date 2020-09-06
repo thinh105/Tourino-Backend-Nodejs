@@ -70,11 +70,6 @@ const tourSchema = new mongoose.Schema(
       type: [String],
       required: [true, 'A tour must have highlight'],
     },
-    // description: {
-    //   type: String,
-    //   trim: true,
-    //   required: [true, 'A tour must have a description'],
-    // },
     imageCover: {
       type: String,
       required: [true, 'A tour must have a image cover'],
@@ -99,7 +94,7 @@ const tourSchema = new mongoose.Schema(
           required: [true, "A timeline must have day's title"],
         },
         description: {
-          type: [String],
+          type: String,
           required: [true, "A timeline must have day's description"],
         },
       },
@@ -144,13 +139,13 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-tourSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'guides',
-    select: '-__v -passwordChangedAt -passwordResetExpires -passwordResetToken',
-  });
-  next();
-});
+// tourSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'guides',
+//     select: '-__v -passwordChangedAt -passwordResetExpires -passwordResetToken',
+//   });
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 

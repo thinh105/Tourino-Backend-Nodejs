@@ -1,12 +1,13 @@
 const express = require('express');
 const tourController = require('../controller/tourController');
 const authController = require('../controller/authController');
-
 const reviewRouter = require('./reviewRouter');
 
 const router = express.Router();
 
 router.route('/tour-statistics').get(tourController.getTourStatistics);
+
+// Advanced Route
 
 router
   .route('/monthly-plan/:year')
@@ -24,6 +25,8 @@ router
 router.route('/destinations').get(tourController.getDestinationsAndCount);
 router.route('/travelStyle').get(tourController.getTravelStyleAndCount);
 
+// Normal CRUD route
+
 router
   .route('/')
   .get(tourController.getAllTours)
@@ -35,10 +38,13 @@ router
   );
 
 // Nested Routes with Express
-router.use('/:slug/reviews', reviewRouter); // the same on app.js ~> routes
+// the same on app.js ~> routes
+// POST /tour/234fad4/reviews
+// GET /tour/234fad4/reviews
+router.use('/:tourId/reviews', reviewRouter);
 
 router
-  .route('/:slug')
+  .route('/:id')
   .get(authController.protect, tourController.getTour)
   .patch(authController.protect, tourController.updateTour)
   .delete(

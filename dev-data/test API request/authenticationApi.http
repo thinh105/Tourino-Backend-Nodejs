@@ -57,8 +57,8 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "indonesia@gmail.com",
-  "password":"tengteng"
+  "email": "john@example.com",
+  "password":"test1234"
 }
 
 ###
@@ -68,8 +68,8 @@ content-type: application/json
 
 
 
-### Sign up 'trn-admin' user
-# @name trn-admin1
+### Sign up 'admin' user
+# @name admin1
 POST {{users}}/signup HTTP/1.1
 content-type: application/json
 
@@ -81,7 +81,7 @@ content-type: application/json
   }
 
 ### Login tu lanh
-# @name trn-admin
+# @name admin
 POST {{users}}/login HTTP/1.1
 content-type: application/json
 
@@ -92,8 +92,8 @@ content-type: application/json
 
 
 ### Token tu Lanh
-#@tokentrn-admin = {{trn-admin.response.body.token}}
-@tokentrn-admin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NzgxNjc3NSwiZXhwIjoxNjAwNDA4Nzc1fQ.JhjEEksYtXqFXCvVvtzt0ZKjF6RgqguJQjHz1FQ3fPQ
+#@tokenadmin = {{admin.response.body.token}}
+@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NzgxNjc3NSwiZXhwIjoxNjAwNDA4Nzc1fQ.JhjEEksYtXqFXCvVvtzt0ZKjF6RgqguJQjHz1FQ3fPQ
 
 
 
@@ -104,7 +104,7 @@ POST {{users}}/forgotPassword HTTP/1.1
 content-type: application/json
 
 {
-  "email": "trn-admin@natours.io"
+  "email": "admin@natours.io"
 }
 
 ### reset Password
@@ -124,7 +124,7 @@ content-type: application/json
 #======================ACTION AFTER AUTHENTICATION======================#
 
 ### Set Token
-@token = {{tokentrn-admin}}
+@token = {{tokenadmin}}
 
 #--------------------------------------------------------------------------#
 
@@ -133,10 +133,10 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5c88fa8cf4afda39709c2966 HTTP/1.1
+GET {{tours}}/5f5215330931da1a2e357467 HTTP/1.1
 Authorization: Bearer {{token}}
 
-### Delete tour - trn-admin or leadGuide
+### Delete tour - admin or leadGuide
 DELETE {{tours}}/5c88fa8cf4afda39709c2951 HTTP/1.1
 Authorization: Bearer {{token}}
 

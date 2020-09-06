@@ -23,11 +23,13 @@ router
   .patch(
     authController.protect,
     authController.restrictTo('user', 'admin'),
+    reviewController.checkReviewOwner,
     reviewController.updateReview
   )
   .delete(
     authController.protect,
     authController.restrictTo('user', 'admin'),
+    reviewController.checkReviewOwner,
     reviewController.deleteReview
   );
 module.exports = router;

@@ -6,7 +6,7 @@ require('dotenv').config({ path: './config.env' });
 
 process.on('uncaughtException', (error) => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-  console.log(error.message);
+  console.log(error);
   process.exit(1);
 });
 

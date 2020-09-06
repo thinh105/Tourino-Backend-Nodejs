@@ -1,6 +1,10 @@
-# ![Node/Express/Mongoose Example App](tourino.png)
+# [Node/Express/Mongoose Example App]
 
-> ## A REST API Backend using `Node` - `Express` - `Mongoose` for the Tourino Project contains practical examples (CRUD, auth, error Handling, etc)
+![](tourino.png)
+
+> ### A REST API Backend using `Node` - `Express` - `Mongoose` for the Tourino Project contains practical examples (CRUD, auth, error Handling, etc)
+
+<br />
 
 # Getting started
 

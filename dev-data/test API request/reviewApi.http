@@ -3,41 +3,28 @@
 
 @tours = http://127.0.0.1:6969/api/v1/tours
 
+
+
+#======================Set Token======================#
+
+### Token tu Lanh
+#@token = 
+
+# token user 1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGEyNDI4MmY4ZmI4MTRiNTZmYTE4ZiIsImlhdCI6MTU5OTIxMTc3OCwiZXhwIjoxNjAwMDc1Nzc4fQ.ZsuMRHtj1CRfDR3-zBLtsHAFhg39kh048E-UTvOc_uY
+
+
+# token user 2
+# @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGEyNDgyMmY4ZmI4MTRiNTZmYTE5MiIsImlhdCI6MTU5OTQwNjQxNywiZXhwIjoxNjAwMjcwNDE3fQ.in9DNOP1nk2Lh1YNhTy7BoYJmbsuUfB6iwA6Cq-6Hpk
+
+
+#======================ACTION======================#
+
 ### Get All reviews
 GET {{review}}
 
-#======================LOGIN======================#
-### Login tu lanh
-# @name trn-admin
-POST {{users}}/login HTTP/1.1
-content-type: application/json
-
-{
-  "email": "trn-admin@natours.io",
-  "password": "test1234"
-}
-
-### Login normal user
-# @name user1
-POST {{users}}/login HTTP/1.1
-content-type: application/json
-
-{
-  "email": "loulou@example.com",
-  "password": "test1234"
-}
-
-# ------------------------------------------------- #
-
-### Set Token
-### Token tu Lanh
-#@tokentrn-admin = {{trn-admin.response.body.token}}
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZGZhMmY4ZmI4MTRiNTZmYTE4MSIsImlhdCI6MTU5NDg3MTk3OSwiZXhwIjoxNTk3NDYzOTc5fQ.JhbgKjQ0XPpnpJ5bT3VikfQY81ALcQSWF_uFdIyeNYQ
-
-#======================ACTION AFTER AUTHENTICATION======================#
-
 ### Get a review
-GET {{review}}/5c8a38da14eb5c17645c911c HTTP/1.1
+GET {{review}}/5f54c94f964ea41f89ef7e14  HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a review - error - Review must belong to a tour!!!
@@ -52,13 +39,13 @@ Authorization: Bearer {{token}}
 
 
 ### Post a review with tour ID in URL and get an User ID from authentication
-POST {{tours}}/5c88fa8cf4afda39709c2951/reviews HTTP/1.1
+POST {{tours}}/5f5215330931da1a2e357472/reviews HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 
   {
     "review": "Tìm hiểu thêm về các loại trà Lipton. Thương hiệu với danh mục sản phẩm đa dạng: trà nóng và trà lạnh, trà đen, trà xanh và trà thảo mộc.",
-    "rating": 3
+    "rating": 2
   }
 
 
@@ -75,22 +62,23 @@ Authorization: Bearer {{token}}
   }
 
 ### Get a review of a specific tour
-GET {{tours}}/5c88fa8cf4afda39709c2951/reviews
+GET {{tours}}/5f5215330931da1a2e357472/reviews
 
 ### Get a tour
-GET {{tours}}/5c88fa8cf4afda39709c2951 HTTP/1.1
+GET {{tours}}/5f5215330931da1a2e357472 HTTP/1.1
 Authorization: Bearer {{token}}
 
-### Delete review - trn-admin or leadGuide
-DELETE {{review}}/5ec3c7fad87cdb3fa37a9668 HTTP/1.1
+### Delete review - admin or review owner
+DELETE {{review}}/5f54c94f964ea41f89ef7e14 HTTP/1.1
 Authorization: Bearer {{token}}
 
 
 ###Update Review
-PATCH {{review}}/5c8a34ed14eb5c17645c9108
+PATCH {{review}}/5f54c94f964ea41f89ef7e14
 content-type: application/json
+Authorization: Bearer {{token}}
 
 {
     "review": "Wrong tour, wrong user",
-    "rating": 1
+    "rating": 5
 }

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const idValidator = require('mongoose-id-validator');
+const Tour = require('./tourModel');
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -35,6 +36,9 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+// Make sure to one user can review one time in each tour only
+// reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 // QUERY MIDDLEWARE - auto pupulate user in review
 reviewSchema.pre(/^find/, function (next) {
   this.populate({
@@ -47,8 +51,8 @@ reviewSchema.pre(/^find/, function (next) {
 // validate ID of user and tour
 reviewSchema.plugin(idValidator);
 
-reviewSchema.statics.calcAverageRatings = function (tourId) {
-  this.aggregate([
+reviewSchema.statics.calcAverageRatings = async function (tourId) {
+  const stats = await this.aggregate([
     {
       $match: { tour: tourId },
     },
@@ -60,7 +64,42 @@ reviewSchema.statics.calcAverageRatings = function (tourId) {
       },
     },
   ]);
+
+  if (stats.length > 0) {
+    await Tour.findByIdAndUpdate(tourId, {
+      reviewsQuantity: stats[0].nRating,
+      ratingsAverage: stats[0].avgRating,
+    });
+  } else {
+    await Tour.findByIdAndUpdate(tourId, {
+      reviewsQuantity: 0,
+      ratingsAverage: 0,
+    });
+  }
 };
+
+// Calculate the reviewsQuantity and ratingsAverage when new Review come
+reviewSchema.post('save', function () {
+  // `this` points to current review
+  this.constructor.calcAverageRatings(this.tour);
+});
+
+// Calculate the reviewsQuantity and ratingsAverage when Update/Delete old Review
+
+// findByIdAndUpdate & findByIdAndDelete all using findOneAnd
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  this.getUpdatedTourId = await this.findOne();
+  next();
+});
+
+reviewSchema.post(/^findOneAnd/, async function () {
+  // await this.findOne() does not work in post, query has already executed
+  // so we have to get it from middleware above
+
+  await this.getUpdatedTourId.constructor.calcAverageRatings(
+    this.getUpdatedTourId.tour
+  );
+});
 
 const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;

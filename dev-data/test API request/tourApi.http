@@ -4,7 +4,7 @@
 #-------------------------        LOGIN       -------------------------#
 
 ### Login tu lanh
-# @name trn-admin
+# @name admin
 POST {{users}}/login HTTP/1.1
 content-type: application/json
 
@@ -14,11 +14,11 @@ content-type: application/json
 }
 
 ### Token tu Lanh
-#@tokentrn-admin = {{trn-admin.response.body.token}}
-@tokentrn-admin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NzgxNjc3NSwiZXhwIjoxNjAwNDA4Nzc1fQ.JhjEEksYtXqFXCvVvtzt0ZKjF6RgqguJQjHz1FQ3fPQ
+#@tokenadmin = {{admin.response.body.token}}
+@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NzgxNjc3NSwiZXhwIjoxNjAwNDA4Nzc1fQ.JhjEEksYtXqFXCvVvtzt0ZKjF6RgqguJQjHz1FQ3fPQ
 
 ### Set Token
-@token = {{tokentrn-admin}}
+@token = {{tokenadmin}}
 
 #-------------------------       CRUD FUNCTIONS       -------------------------#
 
@@ -104,8 +104,11 @@ GET {{tours}}?destinations[in]=Sapa&destinations[in]=Hanoi  HTTP/1.1
 ### filter query ALl
 GET {{tours}}?destinations[all]=Sapa&destinations[all]=Hanoi  HTTP/1.1
 
+### filter query ALl
+GET {{tours}}?destinations[all]=Sapa  HTTP/1.1
+
 ### filter query All - 1 city
-GET {{tours}}?destinations=Hue,Halong Bay  HTTP/1.1
+GET {{tours}}?destinations[all]=Hue,Halong Bay,Hanoi,Long Bien  HTTP/1.1
 
 
 #-------------------------    Aggregate query          -------------------------#
