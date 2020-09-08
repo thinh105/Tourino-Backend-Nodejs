@@ -15,7 +15,7 @@ const userRouter = require('./routes/userRouter');
 const reviewRouter = require('./routes/reviewRouter');
 
 const AppError = require('./utils/appError');
-const globalErrorHandler = require('./controller/errorController');
+const globalErrorHandler = require('./utils/errorHandler.js');
 
 const app = express();
 
@@ -56,13 +56,18 @@ app.use(helmet());
 app.use(cors());
 
 // Limit requests from same API
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again later!',
-});
 
-app.use('/api/', limiter);
+if (process.env.NODE_ENV !== 'development') {
+  const limiter = rateLimit({
+    max: 70,
+    windowMs: 15 * 60 * 1000,
+    handler(request, response, next) {
+      next(new AppError('Too many requests, please try again later!', 421));
+    },
+  });
+
+  app.use('/api/', limiter);
+}
 
 // build-in middleware to get req.body ~ req.query from body
 app.use(express.json({ limit: '10kb' }));
@@ -85,9 +90,8 @@ app.use(express.static(path.join('__dirname', 'public'))); //  `${__dirname}/pub
 //   next();
 // });
 
-// middleware to show log on console
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  app.use(morgan('dev')); // middleware to show log on console
 }
 
 // 2 ROUTES

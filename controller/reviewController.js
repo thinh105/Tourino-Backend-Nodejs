@@ -6,6 +6,12 @@ const catchAsync = require('../utils/catchAsync');
 
 // ROUTE HANDLERS
 
+exports.getAllReviews = handler.getAll(Review);
+exports.getReview = handler.getOne(Review);
+exports.createReview = handler.createOne(Review);
+exports.deleteReview = handler.deleteOne(Review);
+exports.updateReview = handler.updateOne(Review);
+
 exports.setTourUserIds = (request, response, next) => {
   // Allow nested routes
 
@@ -31,9 +37,3 @@ exports.checkReviewOwner = catchAsync(async (request, response, next) => {
 
   next();
 });
-
-exports.getAllReviews = handler.getAll(Review);
-exports.getReview = handler.getOne(Review);
-exports.createReview = handler.createOne(Review);
-exports.deleteReview = handler.deleteOne(Review);
-exports.updateReview = handler.updateOne(Review);
