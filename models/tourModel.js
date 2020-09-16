@@ -34,7 +34,7 @@ const tourSchema = new mongoose.Schema(
       type: [String],
       required: [true, 'A tour must have travel styles'],
     },
-    ratingsAverage: {
+    rating: {
       type: Number,
       default: 0,
       set: (value) => Math.round(value * 10) / 10, // 4.666666 ~> 46.6666 ~> 47 ~> 4.7
@@ -108,7 +108,7 @@ const tourSchema = new mongoose.Schema(
 
 // tourSchema.index({ price: 1 }); // 1 = ascending order | -1 = descending order
 
-// tourSchema.index({ price: 1, ratingsAverage: -1 }); // compound index
+// tourSchema.index({ price: 1, rating: -1 }); // compound index
 
 // Virtual populate for show up child referencing
 tourSchema.virtual('reviews', {
@@ -148,5 +148,7 @@ tourSchema.pre(/^find/, function (next) {
 // });
 
 const Tour = mongoose.model('Tour', tourSchema);
+
+// rename document field
 
 module.exports = Tour;

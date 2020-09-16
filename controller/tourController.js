@@ -28,7 +28,7 @@ exports.getMonthlyPlan = handler.getMonthlyPlan(Tour);
 
 exports.aliasTopFiveTours = (request, response, next) => {
   request.query.limit = '5';
-  request.query.sort = '-ratingsAverage,price';
-  request.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  request.query.sort = '-rating,price';
+  request.query.fields = 'name,price,rating,summary,difficulty';
   next();
 };

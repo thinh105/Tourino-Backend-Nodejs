@@ -40,7 +40,7 @@ content-type: application/json
     "duration": 5,
     "maxGroupSize": 20,
     "difficulty": "medium",
-    "ratingsAverage": 4.7,
+    "rating": 4.7,
     "ratingsQuantity": 35,
     "price": 456,
     "summary": "Breathtaking hike through the Canadian Banff National Park",
@@ -82,7 +82,7 @@ content-type: application/json
 {
 	"name": "Ha",
   "difficulty": "very very hard",
-  "ratingsAverage":7
+  "rating":7
 }
 					
 

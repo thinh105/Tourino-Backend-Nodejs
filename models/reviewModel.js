@@ -68,23 +68,23 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
   if (stats.length > 0) {
     await Tour.findByIdAndUpdate(tourId, {
       reviewsQuantity: stats[0].nRating,
-      ratingsAverage: stats[0].avgRating,
+      rating: stats[0].avgRating,
     });
   } else {
     await Tour.findByIdAndUpdate(tourId, {
       reviewsQuantity: 0,
-      ratingsAverage: 0,
+      rating: 0,
     });
   }
 };
 
-// Calculate the reviewsQuantity and ratingsAverage when new Review come
+// Calculate the reviewsQuantity and rating when new Review come
 reviewSchema.post('save', function () {
   // `this` points to current review
   this.constructor.calcAverageRatings(this.tour);
 });
 
-// Calculate the reviewsQuantity and ratingsAverage when Update/Delete old Review
+// Calculate the reviewsQuantity and rating when Update/Delete old Review
 
 // findByIdAndUpdate & findByIdAndDelete all using findOneAnd
 reviewSchema.pre(/^findOneAnd/, async function (next) {

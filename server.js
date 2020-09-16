@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-
 const mongoose = require('mongoose');
+
 require('dotenv').config({ path: './config.env' });
 // connect environment variable config.env file
 

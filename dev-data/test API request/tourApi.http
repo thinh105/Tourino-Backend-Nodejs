@@ -27,7 +27,7 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/south-to-north-vietnam-10-days-9bkljl HTTP/1.1
+GET {{tours}}/5f5215330931da1a2e357467 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a tour
@@ -41,7 +41,7 @@ Authorization: Bearer {{token}}
     "duration": 5,
     "maxGroupSize": 15,
     "difficulty": "medium",
-    "ratingsAverage": 4.7,
+    "rating": 4.7,
     "ratingsQuantity": 35,
     "price": 456,
     "summary": "đi Tam chúc chơi quên lối về ",
@@ -67,9 +67,10 @@ DELETE {{tours}}/ HTTP/1.1
 Authorization: Bearer {{token}}
 
 
-#-------------------------       ADVANCED QUERY       -------------------------#
+#-------------------------ADVANCED QUERY-------------------------#
+
 ###
-GET {{tours}}?price[gt]=100&price[lt]=8000  HTTP/1.1
+GET {{tours}}?price[gt]=1200&price[lt]=8000  HTTP/1.1
 ### filter query 1
 
 ### filter query - range of price
@@ -80,7 +81,7 @@ GET {{tours}}?travelStyle[all]=Adventure&travelStyle[all]=Mountain Hikes  HTTP/1
 
 
 ### filter query 2
-GET {{tours}}?price[lt]=1000&ratingsAverage[gte]=4.8   HTTP/1.1
+GET {{tours}}?price[lt]=1000&rating[gte]=2   HTTP/1.1
 
 
 ### sort query					

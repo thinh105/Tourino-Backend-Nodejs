@@ -119,7 +119,7 @@ exports.getTourStatistics = (Model) =>
           _id: '$duration',
           num: { $sum: 1 },
           numRating: { $sum: '$reviewsQuantity' },
-          avgRating: { $avg: '$ratingsAverage' },
+          avgRating: { $avg: '$rating' },
           avgPrice: { $avg: '$price' },
           minPrice: { $min: '$price' },
           maxPrice: { $max: '$price' },
