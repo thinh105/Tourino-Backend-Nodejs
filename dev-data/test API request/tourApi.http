@@ -27,7 +27,7 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5f5215330931da1a2e357467 HTTP/1.1
+GET {{tours}}/5f6d8b6b64fb1c7c487bb799 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a tour

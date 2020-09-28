@@ -11,7 +11,7 @@
 #@token = 
 
 # token user 1
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGEyNDI4MmY4ZmI4MTRiNTZmYTE4ZiIsImlhdCI6MTU5OTIxMTc3OCwiZXhwIjoxNjAwMDc1Nzc4fQ.ZsuMRHtj1CRfDR3-zBLtsHAFhg39kh048E-UTvOc_uY
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNmVjYzgyYzY1YWUzM2JkZjhmOGE1YSIsImlhdCI6MTYwMTA5Njg3NSwiZXhwIjoxNjAxOTYwODc1fQ.nrtT7RcmjBvTo2Wi6JM_TBMbzmRXU71gMn1xQzeBbVM
 
 
 # token user 2
@@ -24,7 +24,7 @@
 GET {{review}}
 
 ### Get a review
-GET {{review}}/5f54c94f964ea41f89ef7e14  HTTP/1.1
+GET {{review}}/5f6d8b6b64fb1c7c487bb799  HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a review - error - Review must belong to a tour!!!
@@ -39,7 +39,7 @@ Authorization: Bearer {{token}}
 
 
 ### Post a review with tour ID in URL and get an User ID from authentication
-POST {{tours}}/5f5215330931da1a2e357472/reviews HTTP/1.1
+POST {{tours}}/5f6d8b6b64fb1c7c487bb799/reviews HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -62,10 +62,10 @@ Authorization: Bearer {{token}}
   }
 
 ### Get a review of a specific tour
-GET {{tours}}/5f5215330931da1a2e357472/reviews
+GET {{tours}}/5f6d8b6b64fb1c7c487bb799/reviews
 
 ### Get a tour
-GET {{tours}}/5f5215330931da1a2e357472 HTTP/1.1
+GET {{tours}}/5f6d8b6b64fb1c7c487bb799 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete review - admin or review owner

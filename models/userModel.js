@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'guide', 'lead-guide', 'trn-admin'],
+    enum: ['user', 'moderator', 'trn-admin'],
     default: 'user',
   },
   password: {
@@ -66,11 +66,13 @@ userSchema.plugin(uniqueValidator, {
 
 // ------------ ENCRYPTION PASSWORD ------------
 // pre-middleware on save
-// the encryption is then gonna be happened between the moment that we receive that data
+// the encryption is then gonna be happened
+// between the moment that we receive that data
 // and the moment where it's actually persisted to the database
+
 // Need to be turn off when import old database
 
-/* userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();
 
@@ -80,9 +82,10 @@ userSchema.plugin(uniqueValidator, {
   // delete passwordConfirm field
   this.passwordConfirm = undefined;
   next();
-}); */
+});
 
 //  ---------- Update changedPasswordAt property for the user ------------
+// Need to be turn off when import old database
 userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) return next();
 

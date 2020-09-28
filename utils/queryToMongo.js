@@ -20,7 +20,16 @@ module.exports = (query) => {
     : '-images -timeline -__v';
 
   mongoQuery.page = Number.parseInt(page, 10) || 1;
-  mongoQuery.limit = Number.parseInt(limit, 10) || 10;
+
+  if (limit) {
+    const limitInteger = Number.parseInt(limit, 10);
+
+    // not allow someone get all data at once.
+    mongoQuery.limit = limitInteger > 20 ? 20 : limitInteger;
+  } else {
+    mongoQuery.limit = 10;
+  }
+
   mongoQuery.skip = (mongoQuery.page - 1) * mongoQuery.limit;
 
   return mongoQuery;

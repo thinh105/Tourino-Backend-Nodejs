@@ -44,8 +44,8 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "thien@example.com",
-  "password":"test1234"
+  "email": "indonesia@gmail.com",
+  "password":"tengteng"
 }
 
 ###
@@ -86,14 +86,14 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "trn-admin@natours.io",
+  "email": "admin@tourino.com",
   "password": "test1234"
 }
 
 
 ### Token tu Lanh
 #@tokenadmin = {{admin.response.body.token}}
-@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NzgxNjc3NSwiZXhwIjoxNjAwNDA4Nzc1fQ.JhjEEksYtXqFXCvVvtzt0ZKjF6RgqguJQjHz1FQ3fPQ
+@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTYwMTAyMTcxNCwiZXhwIjoxNjAxODg1NzE0fQ.0nhFVmCEckXmqdxUpWiNHBkINjH7cq7zTmT5kt5lmdo
 
 
 
@@ -104,7 +104,7 @@ POST {{users}}/forgotPassword HTTP/1.1
 content-type: application/json
 
 {
-  "email": "admin@natours.io"
+  "email": "admin@tourino.com"
 }
 
 ### reset Password
@@ -133,7 +133,7 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5f5215330931da1a2e357467 HTTP/1.1
+GET {{tours}}/5f6d8b6b64fb1c7c487bb799 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete tour - admin or leadGuide
@@ -178,7 +178,7 @@ Authorization: Bearer {{token}}
 
 
 ### Get all users
-GET {{users}} HTTP/1.1
+GET {{users}}?limit=100 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get all users

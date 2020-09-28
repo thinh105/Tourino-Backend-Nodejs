@@ -79,9 +79,9 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
 };
 
 // Calculate the reviewsQuantity and rating when new Review come
-reviewSchema.post('save', function () {
+reviewSchema.post('save', async function () {
   // `this` points to current review
-  this.constructor.calcAverageRatings(this.tour);
+  await this.constructor.calcAverageRatings(this.tour);
 });
 
 // Calculate the reviewsQuantity and rating when Update/Delete old Review
