@@ -60,6 +60,7 @@ const importTour = async () => {
   );
 
   console.log('🌟🌟🌟 Finished!!! 🌟🌟🌟');
+  process.exit();
 };
 
 const randomArrayElement = (array) =>
@@ -162,6 +163,7 @@ const importReviewFromJson = async () => {
   await Promise.all([...ReviewPromises]);
 
   console.log('🌟🌟🌟 Finished!!! 🌟🌟🌟');
+  process.exit();
 };
 
 const generateRandomReview = async () => {

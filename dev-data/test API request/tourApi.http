@@ -15,7 +15,7 @@ content-type: application/json
 
 ### Token tu Lanh
 #@tokenadmin = {{admin.response.body.token}}
-@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTU5NzgxNjc3NSwiZXhwIjoxNjAwNDA4Nzc1fQ.JhjEEksYtXqFXCvVvtzt0ZKjF6RgqguJQjHz1FQ3fPQ
+@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTYwMTAyMTcxNCwiZXhwIjoxNjAxODg1NzE0fQ.0nhFVmCEckXmqdxUpWiNHBkINjH7cq7zTmT5kt5lmdo
 
 ### Set Token
 @token = {{tokenadmin}}
@@ -77,7 +77,7 @@ GET {{tours}}?price[gt]=1200&price[lt]=8000  HTTP/1.1
 GET {{tours}}?price[gt]=100&price[lt]=8000000  HTTP/1.1
 
 ### filter query -travelStyle
-GET {{tours}}?travelStyle[all]=Adventure&travelStyle[all]=Mountain Hikes  HTTP/1.1
+GET {{tours}}?travelStyle[all]=Train and Rail  HTTP/1.1
 
 
 ### filter query 2

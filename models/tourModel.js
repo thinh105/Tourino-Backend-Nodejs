@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const Review = require('./reviewModel');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -131,13 +132,26 @@ tourSchema.pre('save', function (next) {
   next();
 });
 
-// QUERY MIDDLEWARE
-tourSchema.pre(/^find/, function (next) {
-  this.find({ secretTour: { $ne: true } });
+// tourSchema.pre('remove', { document: true }, async function (tour) {
+//   await Review.deleteOne({ tour: tour._id });
+//   console.log('Delete reviews of that deleted tour!!!');
+// });
 
-  this.start = Date.now();
-  next();
-});
+tourSchema.post(
+  /findOneAndDelete|findOneAndRemove|deleteOne|remove/,
+  { document: true },
+  async function (tour) {
+    await Review.deleteMany({ tour: tour._id });
+  }
+);
+
+// QUERY MIDDLEWARE
+// tourSchema.pre(/^find/, function (next) {
+//   this.find({ secretTour: { $ne: true } });
+
+//   this.start = Date.now();
+//   next();
+// });
 
 // tourSchema.pre(/^find/, function (next) {
 //   this.populate({

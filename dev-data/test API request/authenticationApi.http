@@ -68,8 +68,7 @@ content-type: application/json
 
 
 
-### Sign up 'admin' user
-# @name admin1
+### Sign up user
 POST {{users}}/signup HTTP/1.1
 content-type: application/json
 
@@ -86,14 +85,14 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "admin@tourino.com",
+  "email": "helenvu@tourino.com",
   "password": "test1234"
 }
 
 
 ### Token tu Lanh
 #@tokenadmin = {{admin.response.body.token}}
-@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGExZDViMDE5MGIyMTQzNjBkYzA1NyIsImlhdCI6MTYwMTAyMTcxNCwiZXhwIjoxNjAxODg1NzE0fQ.0nhFVmCEckXmqdxUpWiNHBkINjH7cq7zTmT5kt5lmdo
+@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzIwZjA1ZTdiNzg0Mjk3YTBmYmMwNCIsImlhdCI6MTYwMTQzODQ5MSwiZXhwIjoxNjAyMzAyNDkxfQ.sf4-IrkC3-_YqymfjQDfYP1cUVwMsnHWlL_lw6Zj3kc
 
 
 
@@ -129,15 +128,15 @@ content-type: application/json
 #--------------------------------------------------------------------------#
 
 ### Get all tour
-GET {{tours}} HTTP/1.1
+GET {{tours}}?fields=id HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
 GET {{tours}}/5f6d8b6b64fb1c7c487bb799 HTTP/1.1
 Authorization: Bearer {{token}}
 
-### Delete tour - admin or leadGuide
-DELETE {{tours}}/5c88fa8cf4afda39709c2951 HTTP/1.1
+### Delete tour - admin
+DELETE {{tours}}/5f73ea47755f8927654011fa HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Update tour
