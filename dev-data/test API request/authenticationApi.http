@@ -128,11 +128,15 @@ content-type: application/json
 #--------------------------------------------------------------------------#
 
 ### Get all tour
-GET {{tours}}?fields=id HTTP/1.1
+GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5f6d8b6b64fb1c7c487bb799 HTTP/1.1
+GET {{tours}}/5f7462b2b86dc1797ccf7e9d HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Get a tour by slug
+GET {{tours}}/slug/vietnam-express-southbound-vkyuu HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete tour - admin

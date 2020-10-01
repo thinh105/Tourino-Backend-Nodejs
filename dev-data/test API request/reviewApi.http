@@ -39,7 +39,7 @@ Authorization: Bearer {{token}}
 
 
 ### Post a review with tour ID in URL and get an User ID from authentication
-POST {{tours}}/5f73ea47755f8927654011c2/reviews HTTP/1.1
+POST {{tours}}/5f7462b2b86dc1797ccf7e9d/reviews HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 

@@ -44,6 +44,10 @@ router
 router.use('/:tourId/reviews', reviewRouter);
 
 router
+  .route('/slug/:slug')
+  .get(authController.protect, tourController.getTourBySlug);
+
+router
   .route('/:id')
   .get(authController.protect, tourController.getTour)
   .patch(authController.protect, tourController.updateTour)

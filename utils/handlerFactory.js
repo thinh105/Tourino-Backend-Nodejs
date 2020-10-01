@@ -28,21 +28,20 @@ exports.getAll = (Model) =>
   });
 
 /**
-  * 
-  * @param  { model }   Model   Mongoose Model 
-  * @param  { Object }  Option  Specific options for Tour Controller
-  * {
-    populate: { path: 'reviews' },
-    };
-  */
+ * @param  { model }   Model  - Mongoose Model
+ * @param  { Object }  Option - Specific options for Tour Controller
+ * @param {Object} Option.populate - populate virtual property - E.g: { path: 'reviews' }
+ * @param {Object} Option.query - using findOne - not findById as default
+ */
 
 exports.getOne = (Model, Option = {}) =>
   catchAsync(async (request, response, next) => {
-    let query = Model.findById(request.params.id);
-
-    query = query.select('-__v');
+    let query = Option.query
+      ? Model.findOne({ [Option.query]: request.params[Option.query] })
+      : Model.findById(request.params.id);
 
     if (Option.populate) query = query.populate(Option.populate);
+    query = query.select('-__v');
 
     const document = await query;
 
