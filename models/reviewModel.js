@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const idValidator = require('mongoose-id-validator');
-const Tour = require('./tourModel');
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -66,12 +65,12 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
   ]);
 
   if (stats.length > 0) {
-    await Tour.findByIdAndUpdate(tourId, {
+    await this.model('Tour').findByIdAndUpdate(tourId, {
       reviewsQuantity: stats[0].nRating,
       rating: stats[0].avgRating,
     });
   } else {
-    await Tour.findByIdAndUpdate(tourId, {
+    await this.model('Tour').findByIdAndUpdate(tourId, {
       reviewsQuantity: 0,
       rating: 0,
     });
@@ -80,8 +79,7 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
 
 // Calculate the reviewsQuantity and rating when new Review come
 reviewSchema.post('save', async function () {
-  // `this` points to current review
-  await this.constructor.calcAverageRatings(this.tour);
+  await this.constructor.calcAverageRatings(this.tour); // `this` points to current review
 });
 
 // Calculate the reviewsQuantity and rating when Update/Delete old Review

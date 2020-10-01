@@ -48,8 +48,6 @@ content-type: application/json
   "password":"tengteng"
 }
 
-###
-@tokenAcc1 = {{acc1.response.body.token}}
 
 ### Login and get data
 # @name acc3
@@ -57,7 +55,7 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "john@example.com",
+  "email": "alicebui@mailinator.com",
   "password":"test1234"
 }
 
@@ -136,11 +134,11 @@ GET {{tours}}/5f7462b2b86dc1797ccf7e9d HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour by slug
-GET {{tours}}/slug/vietnam-express-southbound-vkyuu HTTP/1.1
+GET {{tours}}/slug/vietnam-intro-9-day-s0mdo HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete tour - admin
-DELETE {{tours}}/5f73ea47755f8927654011fa HTTP/1.1
+DELETE {{tours}}/5f7462b2b86dc1797ccf7ef1 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Update tour

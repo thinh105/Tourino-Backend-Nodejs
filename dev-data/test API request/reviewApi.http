@@ -8,14 +8,14 @@
 #======================Set Token======================#
 
 ### Token tu Lanh
-#@token = 
+#@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzIwZjA1ZTdiNzg0Mjk3YTBmYmMwNCIsImlhdCI6MTYwMTQzODQ5MSwiZXhwIjoxNjAyMzAyNDkxfQ.sf4-IrkC3-_YqymfjQDfYP1cUVwMsnHWlL_lw6Zj3kc
 
 # token user 1
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzIwZjA1ZTdiNzg0Mjk3YTBmYmMwNCIsImlhdCI6MTYwMTQzODQ5MSwiZXhwIjoxNjAyMzAyNDkxfQ.sf4-IrkC3-_YqymfjQDfYP1cUVwMsnHWlL_lw6Zj3kc
+# @token = 
 
 
 # token user 2
-# @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOGEyNDgyMmY4ZmI4MTRiNTZmYTE5MiIsImlhdCI6MTU5OTQwNjQxNywiZXhwIjoxNjAwMjcwNDE3fQ.in9DNOP1nk2Lh1YNhTy7BoYJmbsuUfB6iwA6Cq-6Hpk
+ @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzIxZmIwYTRmNmQ2MzkxZmFlNTEyOSIsImlhdCI6MTYwMTUzMjA4MSwiZXhwIjoxNjAyMzk2MDgxfQ.gmKxRgh2uTPvvQYrrM5qsltA2gLo01t39i13ZgG-A7g
 
 
 #======================ACTION======================#
@@ -27,19 +27,8 @@ GET {{review}}
 GET {{review}}/5f6d8b6b64fb1c7c487bb799  HTTP/1.1
 Authorization: Bearer {{token}}
 
-### Post a review - error - Review must belong to a tour!!!
-POST {{review}} HTTP/1.1
-content-type: application/json
-Authorization: Bearer {{token}}
-
-  {
-    "review": "Cựu sao Barca mất tất cả vì ham tiền và ăn chơi trác táng 2 GIỜ TRƯỚC THỂ THAO Alex Song từng có thời điểm bỏ túi 15.000 bảng/tuần tại Arsenal. Anh cũng được Barca chiêu mộ sau đó, nhưng tiền vệ này vẫn tay trắng.",
-    "rating": 1
-  }
-
-
 ### Post a review with tour ID in URL and get an User ID from authentication
-POST {{tours}}/5f7462b2b86dc1797ccf7e9d/reviews HTTP/1.1
+POST {{tours}}/5f7462b2b86dc1797ccf7ea8/reviews HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -48,28 +37,15 @@ Authorization: Bearer {{token}}
     "rating": 2
   }
 
-
-### Post a incorrect TourId
-POST {{review}} HTTP/1.1
-content-type: application/json
-Authorization: Bearer {{token}}
-
-  {
-    "review": "Wrong tour, wrong user",
-    "rating": 1,
-    "tour": "5c88fa8cf4afda39709c2954",
-    "user": "5c88fa8cf4afda39709c2954"
-  }
-
 ### Get a review of a specific tour
-GET {{tours}}/5f74155f194822476e1fdc67/reviews
+GET {{tours}}/5f7462b2b86dc1797ccf7ea8/reviews
 
 ### Del a tour - check if review also be deleted or not
-DELETE {{tours}}/5f74155f194822476e1fdc67 HTTP/1.1
+DELETE {{tours}}/5f7462b2b86dc1797ccf7ea8 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5f73ea47755f8927654011c2 HTTP/1.1
+GET {{tours}}/5f7462b2b86dc1797ccf7ea8 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete review - admin or review owner
@@ -86,3 +62,29 @@ Authorization: Bearer {{token}}
     "review": "Wrong tour, wrong user",
     "rating": 5
 }
+
+
+### ----- ERROR HANDLER ----------
+
+### Post a review - error - Review must belong to a tour!!!
+POST {{review}} HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+  {
+    "review": "Cựu sao Barca mất tất cả vì ham tiền và ăn chơi trác táng 2 GIỜ TRƯỚC THỂ THAO Alex Song từng có thời điểm bỏ túi 15.000 bảng/tuần tại Arsenal. Anh cũng được Barca chiêu mộ sau đó, nhưng tiền vệ này vẫn tay trắng.",
+    "rating": 1
+  }
+
+
+### Post a incorrect TourId
+POST {{review}} HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
+
+  {
+    "review": "Wrong tour, wrong user",
+    "rating": 1,
+    "tour": "5c88fa8cf4afda39709c2954",
+    "user": "5c88fa8cf4afda39709c2954"
+  }

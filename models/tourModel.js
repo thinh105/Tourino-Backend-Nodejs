@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const Review = require('./reviewModel');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -140,8 +139,8 @@ tourSchema.pre('save', function (next) {
 tourSchema.post(
   /findOneAndDelete|findOneAndRemove|deleteOne|remove/,
   { document: true },
-  async function (tour) {
-    await Review.deleteMany({ tour: tour._id });
+  async function () {
+    await this.model('Review').deleteMany({ tour: this._id }); // `this` points to current tour
   }
 );
 
@@ -162,7 +161,4 @@ tourSchema.post(
 // });
 
 const Tour = mongoose.model('Tour', tourSchema);
-
-// rename document field
-
 module.exports = Tour;
