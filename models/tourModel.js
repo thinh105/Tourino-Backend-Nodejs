@@ -145,12 +145,11 @@ tourSchema.post(
 );
 
 // QUERY MIDDLEWARE
-// tourSchema.pre(/^find/, function (next) {
-//   this.find({ secretTour: { $ne: true } });
+tourSchema.pre(/^find/, function (next) {
+  this.find({ secretTour: { $ne: true } });
 
-//   this.start = Date.now();
-//   next();
-// });
+  next();
+});
 
 // tourSchema.pre(/^find/, function (next) {
 //   this.populate({

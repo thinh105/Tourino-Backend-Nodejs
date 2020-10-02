@@ -43,13 +43,11 @@ router
 // GET /tour/234fad4/reviews
 router.use('/:tourId/reviews', reviewRouter);
 
-router
-  .route('/slug/:slug')
-  .get(authController.protect, tourController.getTourBySlug);
+router.route('/slug/:slug').get(tourController.getTourBySlug);
 
 router
   .route('/:id')
-  .get(authController.protect, tourController.getTour)
+  .get(tourController.getTour)
   .patch(authController.protect, tourController.updateTour)
   .delete(
     authController.protect,

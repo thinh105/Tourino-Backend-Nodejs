@@ -36,7 +36,7 @@ const reviewSchema = new mongoose.Schema(
 );
 
 // Make sure to one user can review one time in each tour only
-// reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 // QUERY MIDDLEWARE - auto pupulate user in review
 reviewSchema.pre(/^find/, function (next) {
@@ -79,7 +79,9 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
 
 // Calculate the reviewsQuantity and rating when new Review come
 reviewSchema.post('save', async function () {
-  await this.constructor.calcAverageRatings(this.tour); // `this` points to current review
+  await this.constructor.calcAverageRatings(this.tour);
+  // `this` points to current review
+  // `this.consctructor = this.model('Review')
 });
 
 // Calculate the reviewsQuantity and rating when Update/Delete old Review

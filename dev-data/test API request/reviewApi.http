@@ -28,7 +28,7 @@ GET {{review}}/5f6d8b6b64fb1c7c487bb799  HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Post a review with tour ID in URL and get an User ID from authentication
-POST {{tours}}/5f7462b2b86dc1797ccf7ea8/reviews HTTP/1.1
+POST {{tours}}/5f758c3381230163b4475860/reviews HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 
@@ -38,7 +38,7 @@ Authorization: Bearer {{token}}
   }
 
 ### Get a review of a specific tour
-GET {{tours}}/5f7462b2b86dc1797ccf7ea8/reviews
+GET {{tours}}/5f758c3381230163b4475860/reviews?sort=-createAt
 
 ### Del a tour - check if review also be deleted or not
 DELETE {{tours}}/5f7462b2b86dc1797ccf7ea8 HTTP/1.1
@@ -49,9 +49,10 @@ GET {{tours}}/5f7462b2b86dc1797ccf7ea8 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete review - admin or review owner
-DELETE {{review}}/5f54c94f964ea41f89ef7e14 HTTP/1.1
+DELETE {{review}}/5f75a420364c156e4b9823f7 HTTP/1.1
 Authorization: Bearer {{token}}
 
+#5f75a420364c156e4b9823f7
 
 ###Update Review
 PATCH {{review}}/5f54c94f964ea41f89ef7e14
