@@ -122,7 +122,7 @@ tourSchema.pre('save', function (next) {
   const slugName = slugify(this.name, {
     lower: true,
     locale: 'vi',
-    remove: /[!"'()*+.:@~]/g,
+    remove: /[!"'()*+./:@~-]/g,
   });
 
   const randomString = Math.random().toString(36).slice(8);

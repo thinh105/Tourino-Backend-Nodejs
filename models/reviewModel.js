@@ -35,7 +35,7 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
-// Make sure to one user can review one time in each tour only
+// Make sure to one user can review each tour only one time
 reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 // QUERY MIDDLEWARE - auto pupulate user in review
