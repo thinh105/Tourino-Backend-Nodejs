@@ -12,8 +12,9 @@ https://tourino.herokuapp.com/api/v1/tours
 
 # Tech Stacks
 
-- Nodejs
+- NodeJS
 - Express
+- MongoDB
 - Mongoose
 
 # Code Overview
