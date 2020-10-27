@@ -2,22 +2,21 @@
 
 ![node version](https://img.shields.io/badge/node->=12.0.0-brightgreen.svg)
 
-# About this project
+# 🎉 About this project
 
 <br />
 
 > A REST API Backend using `Node` - `Express` - `Mongoose` for the Tourino Project contains practical examples (CRUD, Authentication & Authorization, Error Handling, Security).
 
-
 <br />
 
-# API Spec
+# 🔄 API Spec
 
 ## Live Demo : https://tourino.herokuapp.com/api/v1/
 
 <br/>
 
-## **Tours**
+## 🏂 **Tours**
 
 | URL                        | HTTP Verb | POST Body   | Authentication | Authorization    | Result                             |
 | -------------------------- | --------- | ----------- | -------------- | ---------------- | ---------------------------------- |
@@ -33,7 +32,7 @@
 
 <br />
 
-## **Users**
+## 👽 **Users**
 
 | URL                               | HTTP Verb | POST Body   | Authentication | Authorization | Result                              |
 | --------------------------------- | --------- | ----------- | -------------- | ------------- | ----------------------------------- |
@@ -55,7 +54,7 @@
 
 <br />
 
-## **Reviews**
+## 📝 **Reviews**
 
 | URL                           | HTTP Verb | POST Body   | Authentication | Authorization                | Result                                  |
 | ----------------------------- | --------- | ----------- | -------------- | ---------------------------- | --------------------------------------- |
@@ -138,7 +137,7 @@ I have chosen to use
 - [PRETTIER](https://prettier.io/)
 - [ESLint](https://eslint.org/)
 
-This works including specific `.eslintrc.json` and `.prettierrc` files in the root directory and making sure your editor has the necessary plugin.
+This works including specific `.eslintrc.json` and `.prettierrc` files in the root directory and making sure your editor has the necessary plugins.
 
 <br />
 
