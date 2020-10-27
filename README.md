@@ -165,6 +165,6 @@ File test can be found in [/dev-data/testApiRequest](./dev-data/testApiRequest) 
 
 This is just a personal project created for study/demonstration purpose, it may or may not be a good fit for your project(s).
 
-Please ⭐ this repository if you like it or this project helped you!\
+Please ⭐ this repository if you like it or this project helped you!
 
 Feel free to open issues or submit pull-requests to help me improving my work.
