@@ -5,17 +5,7 @@ const reviewRouter = require('./reviewRouter');
 
 const router = express.Router();
 
-router.route('/tour-statistics').get(tourController.getTourStatistics);
-
 // Advanced Route
-
-router
-  .route('/monthly-plan/:year')
-  .get(
-    authController.protect,
-    authController.restrictTo('trn-admin', 'moderator', 'guide'),
-    tourController.getMonthlyPlan
-  );
 
 router
   .route('/top-five-tours')
@@ -48,7 +38,11 @@ router.route('/slug/:slug').get(tourController.getTourBySlug);
 router
   .route('/:id')
   .get(tourController.getTour)
-  .patch(authController.protect, tourController.updateTour)
+  .patch(
+    authController.protect,
+    authController.restrictTo('trn-admin', 'moderator'),
+    tourController.updateTour
+  )
   .delete(
     authController.protect,
     authController.restrictTo('trn-admin', 'moderator'),

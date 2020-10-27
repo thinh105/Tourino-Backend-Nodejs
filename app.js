@@ -70,7 +70,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 // build-in middleware to get req.body ~ req.query from body
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ limit: '20kb' }));
 
 // Data Sanitization against:
 app.use(mongoSanitize()); // NoSQL query injection

@@ -44,8 +44,8 @@ POST {{users}}/login HTTP/1.1
 content-type: application/json
 
 {
-  "email": "indonesia@gmail.com",
-  "password":"tengteng"
+  "email": "helenvu@tourino.com",
+  "password": "test1234"
 }
 
 
@@ -90,7 +90,7 @@ content-type: application/json
 
 ### Token tu Lanh
 #@tokenadmin = {{admin.response.body.token}}
-@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzIwZjA1ZTdiNzg0Mjk3YTBmYmMwNCIsImlhdCI6MTYwMTQzODQ5MSwiZXhwIjoxNjAyMzAyNDkxfQ.sf4-IrkC3-_YqymfjQDfYP1cUVwMsnHWlL_lw6Zj3kc
+@tokenadmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNzIwZjA1ZTdiNzg0Mjk3YTBmYmMwNCIsImlhdCI6MTYwMzY4OTgyNCwiZXhwIjoxNjA0NTUzODI0fQ.elGIbGNARL6fBf2fyI0A0RH1wyz6SZq2USfCGMSJVDk
 
 
 
@@ -130,11 +130,11 @@ GET {{tours}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour
-GET {{tours}}/5f7462b2b86dc1797ccf7e9d HTTP/1.1
+GET {{tours}}/5f8832e382f98c24ad5e4aa8 HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Get a tour by slug
-GET {{tours}}/slug/vietnam-express-northbound-nlxbb HTTP/1.1
+GET {{tours}}/slug/vietnam-express-southbound-2gkam HTTP/1.1
 Authorization: Bearer {{token}}
 
 ### Delete tour - admin

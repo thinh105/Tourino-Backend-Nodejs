@@ -1,7 +1,7 @@
 {
-  "name": "natour",
+  "name": "tourino",
   "version": "1.0.0",
-  "description": "Learning Node.js Express.js and MongoDB",
+  "description": "A REST API Backend using NodeJS - ExpressJS - Mongoose for the Tourino Project contains practical examples (CRUD, auth, error Handling, etc)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -15,7 +15,6 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "eslint-plugin-unicorn": "^21.0.0",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.0.0",
     "express-rate-limit": "^5.1.3",
@@ -41,6 +40,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-unicorn": "^21.0.0",
     "prettier": "^2.1.2"
   },
   "engines": {
