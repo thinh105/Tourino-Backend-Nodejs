@@ -9,12 +9,17 @@
     "plugin:unicorn/recommended"
     // "plugin:jest/recommended",
   ],
+  "parserOptions": {
+    // Only ESLint 6.2.0 and later support ES2020.
+    "ecmaVersion": 2022
+  },
   "plugins": ["prettier", "security"],
   "rules": {
     // "prettier/prettier": 2,
 
     // "no-return-await": 0,
     // "class-methods-use-this": 0,
+    "import/extensions": 0,
 
     "no-restricted-syntax": [
       "error",

@@ -1,8 +1,9 @@
-/* eslint-disable no-console */
-const mongoose = require('mongoose');
+import { connect } from 'mongoose';
 
-require('dotenv').config({ path: './config.env' });
-// connect environment variable config.env file
+import dotenv from 'dotenv';
+import app from './app.mjs';
+
+dotenv.config({ path: './config.env' }); // connect environment variable config.env file
 
 process.on('uncaughtException', (error) => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
@@ -10,22 +11,15 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-const app = require('./app');
-
 const databaseConnectionString = process.env.DATABASE_CONNECTION_STRING.replace(
   '<password>',
-  process.env.DATABASE_PASSWORD
+  process.env.DATABASE_PASSWORD,
 ).replace('<dbname>', process.env.DATABASE_NAME);
 
-// const DB = process.env.DATABASE_LOCAL;
-
-mongoose
-  .connect(databaseConnectionString, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
+connect(databaseConnectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log('DB connection succesful!'))
   .catch((error) => console.log(error));
 
@@ -48,7 +42,3 @@ process.on('unhandledRejection', (error) => {
     process.exit(1);
   });
 });
-
-// let nodemon = require('nodemon');
-// // force a quit
-// nodemon.emit('quit');
